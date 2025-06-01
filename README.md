@@ -6,11 +6,15 @@
 
 ```css
 /* CSS HEX */
---dark-violet: #9c09c0ff;
---moonstone: #58a4b0ff;
+--jasper: #D0664Dff;
+--silver: #B5BAB8ff;
+--persian-orange: #D09166ff;
+--umber: #6D5A45ff;
+--celestial-blue: #4492C3ff;
+--french-gray: #AEABAFff;
+--charcoal: #304156ff;
 --indigo-dye: #003d5bff;
---amaranth: #d1495bff;
---hunyadi-yellow: #edae49ff;
+--dark-violet: #9c09c0ff;
 --seasalt: #F8F9FA;
 --white: #ffffffff;
 ```

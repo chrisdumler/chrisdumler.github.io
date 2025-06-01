@@ -1,9 +1,13 @@
 :root {
-    --dark-violet: #9c09c0ff;
-    --moonstone: #58a4b0ff;
+    --jasper: #D0664Dff;
+    --silver: #B5BAB8ff;
+    --persian-orange: #D09166ff;
+    --umber: #6D5A45ff;
+    --celestial-blue: #4492C3ff;
+    --french-gray: #AEABAFff;
+    --charcoal: #304156ff;
     --indigo-dye: #003d5bff;
-    --amaranth: #d1495bff;
-    --hunyadi-yellow: #edae49ff;
+    --dark-violet: #9c09c0ff;
     --seasalt: #F8F9FA;
     --white: #ffffffff;
 }
@@ -17,8 +21,8 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
-    color: var(--indigo-dye);
-    background: linear-gradient(135deg, var(--moonstone) 0%, var(--dark-violet) 100%);
+    color: var(--charcoal);
+    background: linear-gradient(135deg, var(--celestial-blue) 0%, var(--umber) 100%);
     min-height: 100vh;
 }
 
@@ -37,23 +41,31 @@ body {
 .profile-section {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 2rem;
+    justify-content: space-between;
+    gap: 3rem;
     margin-bottom: 2rem;
-    flex-wrap: wrap;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .profile-img {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
+    width: 240px;
+    height: 300px;
+    border-radius: 12px;
     border: 4px solid rgba(255,255,255,0.2);
     object-fit: cover;
     background: rgba(255,255,255,0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 4.5rem;
+    font-size: 4rem;
+    flex-shrink: 0;
+}
+
+.hero-text {
+    flex: 1;
+    text-align: left;
 }
 
 .hero-text h1 {
@@ -101,7 +113,7 @@ body {
 }
 
 .nav-pill:hover, .nav-pill.active {
-    background: var(--moonstone);
+    background: var(--celestial-blue);
     color: var(--white);
     transform: translateY(-2px);
 }
@@ -113,8 +125,8 @@ body {
 .section-title {
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
-    color: var(--indigo-dye);
-    border-left: 4px solid var(--moonstone);
+    color: var(--charcoal);
+    border-left: 4px solid var(--celestial-blue);
     padding-left: 1rem;
 }
 
@@ -140,18 +152,18 @@ body {
     font-size: 1.3rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    color: var(--indigo-dye);
+    color: var(--charcoal);
 }
 
 .project-subtitle {
-    color: var(--dark-violet);
+    color: var(--jasper);
     font-weight: 500;
     margin-bottom: 1rem;
 }
 
 .project-description {
     margin-bottom: 1.5rem;
-    color: var(--indigo-dye);
+    color: var(--charcoal);
     opacity: 0.8;
 }
 
@@ -164,7 +176,7 @@ body {
 
 .project-link {
     padding: 0.5rem 1rem;
-    background: var(--moonstone);
+    background: var(--indigo-dye);
     color: var(--white);
     text-decoration: none;
     border-radius: 8px;
@@ -177,7 +189,7 @@ body {
 }
 
 .project-link.secondary {
-    background: var(--indigo-dye);
+    background: var(--celestial-blue);
 }
 
 .project-link.secondary:hover {
@@ -193,16 +205,16 @@ body {
 
 .experience-title {
     font-weight: 600;
-    color: var(--indigo-dye);
+    color: var(--charcoal);
 }
 
 .experience-company {
-    color: var(--dark-violet);
+    color: var(--jasper);
     font-weight: 500;
 }
 
 .experience-period {
-    color: var(--indigo-dye);
+    color: var(--charcoal);
     opacity: 0.7;
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
@@ -210,7 +222,7 @@ body {
 
 .contact-section {
     text-align: center;
-    background: linear-gradient(135deg, var(--moonstone) 0%, var(--dark-violet) 100%);
+    background: linear-gradient(135deg, var(--persian-orange) 0%, var(--umber) 100%);
     color: var(--white);
     padding: 3rem;
     border-radius: 15px;
@@ -236,8 +248,8 @@ body {
 }
 
 .contact-link:hover {
-    background: var(--hunyadi-yellow);
-    color: var(--indigo-dye);
+    background: var(--jasper);
+    color: var(--white);
     transform: translateY(-2px);
 }
 
@@ -253,6 +265,16 @@ body {
     .profile-section {
         flex-direction: column;
         text-align: center;
+        gap: 2rem;
+    }
+    
+    .hero-text {
+        text-align: center;
+    }
+    
+    .profile-img {
+        width: 200px;
+        height: 250px;
     }
     
     .content {
