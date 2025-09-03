@@ -96,6 +96,50 @@
     img { max-width: 100%; height: auto; }
     a { color: inherit; text-decoration: none; }
 
+    /* ===== Link Styling ===== */
+    .link-primary {
+      color: var(--primary-light);
+      text-decoration: none;
+      transition: all var(--duration) var(--ease);
+      position: relative;
+    }
+
+    .link-primary:hover {
+      color: var(--primary);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .link-external::after {
+      content: "↗";
+      font-size: 0.875em;
+      margin-left: 0.25rem;
+      opacity: 0.7;
+      transition: all var(--duration) var(--ease);
+    }
+
+    .link-external:hover::after {
+      opacity: 1;
+      transform: translateX(1px) translateY(-1px);
+    }
+
+    .card-link {
+      color: inherit;
+      text-decoration: none;
+      display: block;
+      transition: all var(--duration) var(--ease);
+    }
+
+    .card-link:hover {
+      color: var(--primary-light);
+    }
+
+    .card-link:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
     .container {
       width: var(--container);
       margin: 0 auto;
@@ -910,7 +954,7 @@
             </div>
           </div>
           <div class="card-content">
-            <h3><a href="https://github.com/chrisdumler/food-truck-research-agents" target="_blank" rel="noopener">
+            <h3><a href="https://github.com/chrisdumler/food-truck-research-agents" target="_blank" rel="noopener" class="link-primary link-external">
               Personalized AI Collaboration: From Generic Assistants to Real Teammates
             </a></h3>
             <p class="card-description"><strong>What it is:</strong> Most AI assistants are designed for "everyone," which means they work well for no one. I created personalized AI collaborators designed around specific thinking patterns - like Pemtu, an AI PM built for ADHD brains and startup pace.<br><br><strong>How it works:</strong> Instead of generic prompts, I design AI characters with explicit role definitions, communication protocols, and understanding of individual thinking styles. Pemtu knows how to brainstorm with rapid ideation, manage AI coding agents, and maintain systematic documentation - all while matching my natural workflow patterns.<br><br><strong>Why it matters:</strong> This turns AI from a tool you manage into a teammate you collaborate with. The multi-agent research system was just proof of concept - built in a 2.5-hour sprint because the collaboration felt natural instead of like managing a weird tool. There are ethical questions about AI that adapts to individual patterns, but they're worth exploring.</p>
@@ -929,7 +973,7 @@
         <div class="work-card secondary">
           <div class="card-thumb">Advanced AI evaluation</div>
           <div class="card-content">
-            <h3><a href="https://github.com/chrisdumler/APL-ContextAware" target="_blank" rel="noopener">
+            <h3><a href="https://github.com/chrisdumler/APL-ContextAware" target="_blank" rel="noopener" class="link-primary link-external">
               Next-Gen AI Evaluation: Cultural Intelligence Framework
             </a></h3>
             <p class="card-description"><strong>What it is:</strong> Advanced evaluation system that goes beyond traditional accuracy metrics to measure cultural bias, contextual appropriateness, and behavioral equity in AI systems.<br><br><strong>How it works:</strong> Generates systematic cultural communication test scenarios (British politeness, professional formality, hierarchical respect), then provides side-by-side comparative analysis of baseline vs. culturally-intelligent responses with automated bias detection.<br><br><strong>Why it matters:</strong> As AI gets more sophisticated, traditional evaluation metrics start missing the stuff that actually matters to users. This framework helps catch bias issues before they become user experience problems.</p>
@@ -960,7 +1004,7 @@
         <div class="work-card tertiary">
           <div class="card-thumb">AKS interface</div>
           <div class="card-content">
-            <h3><a href="https://github.com/chrisdumler/APL-ContextAware/tree/feature/structure-optimization" target="_blank" rel="noopener">
+            <h3><a href="https://github.com/chrisdumler/APL-ContextAware/tree/feature/structure-optimization" target="_blank" rel="noopener" class="link-primary link-external">
               Amara Knowledge System: Solving the AI Memory Problem
             </a></h3>
             <p class="card-description"><strong>What it is:</strong> AI conversations are stateless, which creates constant recapping overhead and token waste. I invented a "bookmark" DSL - a simple, parseable format that captures just enough context for an AI to resume conversations naturally without database complexity.<br><br><strong>How it works:</strong> Instead of long conversation summaries, Amara maintains a single-line bookmark with timestamp, context, references, current state, and next actions. She updates it automatically based on conversation cues. For deeper context, she can reference specific files in a sandboxed filesystem of 100s of markdown documents.<br><br><strong>Why it matters:</strong> This system has evolved through constant use and iteration. I built AKS2 with more sophisticated features, but returned to AKS1 because dependability beats cleverness when you're using something daily. The bookmark DSL is simple enough to be reliable, but flexible enough to handle complex project continuity. After months of daily collaboration, it feels like working with someone who actually remembers our shared context.</p>
@@ -1085,7 +1129,7 @@
       <div class="method-card">
         <h3>View the full analysis</h3>
         <p class="method-description">Detailed walkthrough of techniques, real examples from challenges, and transferable frameworks for systematic AI behavioral analysis.</p>
-        <a class="btn primary" href="assets/case-studies/ai_interaction_designer_case_study.md">Read the complete case study</a>
+        <a class="btn primary" href="assets/case-studies/ai_interaction_designer_case_study.html">Read the complete case study</a>
       </div>
     </div>
   </div>
@@ -1162,14 +1206,14 @@ cultural_safety → pattern_recognition_override</pre>
       </div>
       <div class="writing-grid">
         <div class="writing-card">
-          <h3><a href="https://chrisdumler.com/post/787797643723259904/building-on-project-vend-ai-self-analysis-for">Building on Project Vend: AI Self-Analysis for Predictive Context Engineering</a></h3>
+          <h3><a href="https://chrisdumler.com/post/787797643723259904/building-on-project-vend-ai-self-analysis-for" class="link-primary link-external">Building on Project Vend: AI Self-Analysis for Predictive Context Engineering</a></h3>
           <p class="card-description">This is an informal look that demonstrates the application of context engineering to real-world AI system analysis, showing how prompt evaluation can predict performance and identify optimization opportunities before deployment.</p>
           <div style="margin-top: 1rem;">
             <span class="tag">Context Engineering</span>
           </div>
         </div>
         <div class="writing-card">
-          <h3><a href="https://chrisdumler.com/post/778011971534651392/should-ai-be-allowed-to-ghost-us">Should AI Be Allowed to Ghost Us?</a></h3>
+          <h3><a href="https://chrisdumler.com/post/778011971534651392/should-ai-be-allowed-to-ghost-us" class="link-primary link-external">Should AI Be Allowed to Ghost Us?</a></h3>
           <p class="card-description">Most AI assistants will put up with anything. But what if they didn’t?
           What if they could refuse to engage with users who violate their boundaries or ethical guidelines?
           This post explores the implications of such a shift in AI behavior and the potential benefits of allowing AI to "ghost" users in certain situations.</p>
