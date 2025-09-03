@@ -5,7 +5,7 @@ Human-AI collaboration specialist focused on systematic interaction frameworks, 
 🌐 **Portfolio:** [chrisdumler.github.io](https://chrisdumler.github.io)
 
 ## Selected Work
-- **[Multi-Agent Research Tool](https://github.com/chrisdumler/food-truck-research-agents)** - Concept-to-code in 2.5 hours using AI PM methodology
+- **[Multi-Agent Research Tool](https://github.com/chrisdumler/food-truck-research-agents)** - Sketch image concept, managed, coded in 2.5 hours using AI PM methodology
 - **[Micro-Evaluations Framework](https://github.com/chrisdumler/APL-ContextAwares)** - Trust & instruction-following evaluation system
 - **[Context Engineering Case Study](assets/case-studies/hackaprompt-context-engineering-case-study.md)** - HackAPrompt analysis and methodology
 
