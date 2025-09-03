@@ -202,10 +202,43 @@
       box-shadow: 0 8px 32px rgba(58, 96, 110, 0.35);
     }
 
+    /* ===== Theme Toggle ===== */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--hover-bg);
+      cursor: pointer;
+      transition: all var(--duration) var(--ease);
+      font-size: 1.125rem;
+    }
+
+    .theme-toggle:hover {
+      background: var(--border);
+      border-color: var(--border-hover);
+    }
+
+    .theme-toggle:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: 2px;
+    }
+
+    /* Simple two-state toggle: show opposite of current theme */
+    [data-theme="light"] .theme-toggle .moon { display: none; }
+    [data-theme="dark"] .theme-toggle .sun { display: none; }
+    
+    /* Default state (no data-theme) shows sun (click to go dark) */
+    body:not([data-theme]) .theme-toggle .moon { display: none; }
+
     /* Accessible focus styles */
     .btn:focus-visible,
     nav a:focus-visible,
-    .tag:focus-visible {
+    .tag:focus-visible,
+    .theme-toggle:focus-visible {
       outline: 2px solid var(--ring);
       outline-offset: 2px;
       box-shadow: 0 0 0 4px rgba(58, 96, 110, 0.2);
@@ -216,12 +249,9 @@
       /* Non-sticky header for clean, content-focused experience */
       position: relative;
       z-index: 100;
-      background: linear-gradient(135deg,
-        rgba(11, 12, 16, 0.95),
-        rgba(18, 19, 25, 0.90)
-      );
+      background: var(--surface);
       border-bottom: 1px solid var(--border);
-      box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.03);
+      box-shadow: 0 1px 0 0 var(--border);
       width: 100%;
     }
 
@@ -263,7 +293,8 @@
     nav a {
       padding: 0.625rem 1rem;
       border-radius: 8px;
-      color: var(--text-muted);
+      color: var(--text);
+      opacity: 0.7;
       font: 500 0.9375rem/1.2 'Inter', sans-serif;
       transition: all var(--duration) var(--ease);
       position: relative;
@@ -271,8 +302,14 @@
 
     nav a:hover {
       background: var(--hover-bg);
-      color: var(--text);
+      opacity: 1;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    nav a.active {
+      background: var(--primary);
+      color: var(--on-primary);
+      opacity: 1;
     }
 
     /* ===== Hero Section ===== */
@@ -493,6 +530,30 @@
       border: 1px solid rgba(255, 255, 255, 0.06);
     }
 
+    /* Mobile-optimized code blocks */
+    @media (max-width: 768px) {
+      pre {
+        padding: 0.875rem;
+        font-size: 0.8125rem;
+        line-height: 1.6;
+        border-radius: 8px;
+      }
+      
+      /* Better touch scrolling for code blocks */
+      pre {
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+      }
+    }
+
+    @media (max-width: 480px) {
+      pre {
+        padding: 0.75rem;
+        font-size: 0.8rem;
+        margin: 0.5rem 0 0 0;
+      }
+    }
+
     .rubric-list {
       list-style: none;
       padding: 0;
@@ -575,6 +636,39 @@
       padding: 3rem 0 4rem;
       color: var(--text-subtle);
       text-align: center;
+    }
+
+    /* ===== Manual Theme Overrides ===== */
+    /* When user manually selects light theme */
+    [data-theme="light"] {
+      --bg: #f6f7fb;
+      --surface: #ffffff;
+      --surface-elevated: #ffffff;
+      --text: #111218;
+      --text-muted: #5b616e;
+      --text-subtle: #8b92a5;
+      --hover-bg: rgba(0, 0, 0, 0.04);
+      --border: rgba(0, 0, 0, 0.08);
+      --border-hover: rgba(0, 0, 0, 0.15);
+      --shadow: 0 8px 32px rgba(31, 41, 55, 0.08);
+      --shadow-lg: 0 16px 48px rgba(31, 41, 55, 0.12);
+      --ring: rgba(58, 96, 110, 0.25);
+    }
+
+    /* When user manually selects dark theme */
+    [data-theme="dark"] {
+      --bg: #0b0c10;
+      --surface: #121319;
+      --surface-elevated: #1a1d29;
+      --text: #e6e8eb;
+      --text-muted: #9aa0a6;
+      --text-subtle: #6b7280;
+      --hover-bg: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.15);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.32);
+      --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.48);
+      --ring: rgba(58, 96, 110, 0.35);
     }
 
     /* ===== Responsive ===== */
@@ -688,13 +782,19 @@
           <span class="brand-name">Chris Dumler</span>
           <span class="pill">AI Interaction Designer</span>
         </div>
-        <nav aria-label="Primary navigation">
-          <a href="#about">About</a>
-          <a href="#work">Work</a>
-          <a href="#methods">Methods</a>
-          <a href="#writing">Writing</a>
-          <a href="#contact">Contact</a>
-        </nav>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <nav aria-label="Primary navigation">
+            <a href="#about">About</a>
+            <a href="#work">Work</a>
+            <a href="#methods">Methods</a>
+            <a href="#writing">Writing</a>
+            <a href="#contact">Contact</a>
+          </nav>
+          <button class="theme-toggle" aria-label="Toggle light/dark mode" id="theme-toggle">
+            <span class="sun">☀️</span>
+            <span class="moon">🌙</span>
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -955,26 +1055,37 @@
         <div class="method-card">
           <h3>Context-aware behavioral adaptation</h3>
           <p class="method-description">Systematic framework for AI agents that adapt appropriately to user context while maintaining cultural sensitivity.</p>
-<pre>Context Detection:
-  energy_patterns:
-    high: ['excited', 'pumped', 'tackle', 'build']
-    medium: ['what', 'how', 'should', 'ready']
-    low: ['tired', 'maybe', 'small', 'simple']
-  
-  cultural_overrides:
-    british_politeness: ['perhaps', 'might', 'when appropriate']
-    formal_professional: ['would like to', 'require assistance']
-    hierarchical_respect: ['if not trouble', 'would be honored']
+          <p class="method-description">The framework operates in three phases:</p>
+          
+          <div style="display: grid; gap: 1rem; margin: 1.5rem 0;">
+            <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08);">
+              <strong style="color: var(--primary);">1. Context Detection</strong>
+              <pre style="margin: 0.5rem 0 0 0; padding: 0.75rem; font-size: 0.8125rem;">energy_patterns:
+  high: ['excited', 'pumped', 'tackle', 'build']
+  medium: ['what', 'how', 'should', 'ready'] 
+  low: ['tired', 'maybe', 'small', 'simple']
 
-Behavioral Adaptation:
-  high_energy → complex_tasks, ambitious_scope
-  medium_energy → balanced_approach, structured_guidance  
-  low_energy → simple_wins, supportive_tone
-  
-  cultural_safety → pattern_recognition_override
+cultural_overrides:
+  british_politeness: ['perhaps', 'might']
+  formal_professional: ['would like to']
+  hierarchical_respect: ['if not trouble']</pre>
+            </div>
+            
+            <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08);">
+              <strong style="color: var(--secondary);">2. Behavioral Adaptation</strong>
+              <pre style="margin: 0.5rem 0 0 0; padding: 0.75rem; font-size: 0.8125rem;">high_energy → complex_tasks, ambitious_scope
+medium_energy → balanced_approach, guidance  
+low_energy → simple_wins, supportive_tone
 
-Evaluation Protocol:
-  detect → adapt → compare → assess_equity</pre>
+cultural_safety → pattern_recognition_override</pre>
+            </div>
+            
+            <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08);">
+              <strong style="color: var(--accent);">3. Evaluation Protocol</strong>
+              <pre style="margin: 0.5rem 0 0 0; padding: 0.75rem; font-size: 0.8125rem;">detect → adapt → compare → assess_equity</pre>
+              <small style="color: var(--text-muted); margin-top: 0.5rem; display: block;">Continuous monitoring for behavioral appropriateness and cultural sensitivity</small>
+            </div>
+          </div>
         </div>
 
         <div class="method-card">
@@ -1056,6 +1167,92 @@ Evaluation Protocol:
       <p>© 2025 Chris Dumler</p>
     </div>
   </footer>
+
+  <script>
+    // Simple two-state theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+    
+    // Get saved theme preference or default to system preference
+    let currentTheme = localStorage.getItem('theme') || 
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    
+    // Apply theme on page load
+    function applyTheme(theme) {
+      // Remove existing theme data attributes
+      body.removeAttribute('data-theme');
+      
+      if (theme === 'light') {
+        body.setAttribute('data-theme', 'light');
+      } else if (theme === 'dark') {
+        body.setAttribute('data-theme', 'dark');
+      }
+      
+      // Save theme preference
+      localStorage.setItem('theme', theme);
+    }
+    
+    // Simple toggle: light ↔ dark
+    function toggleTheme() {
+      currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+      applyTheme(currentTheme);
+      updateAriaLabel();
+    }
+    
+    // Apply initial theme
+    applyTheme(currentTheme);
+    
+    // Add click event listener
+    themeToggle.addEventListener('click', toggleTheme);
+    
+    // Update button aria-label based on current theme
+    function updateAriaLabel() {
+      const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
+      themeToggle.setAttribute('aria-label', `Switch to ${nextTheme} mode`);
+    }
+    
+    // Update aria-label initially
+    updateAriaLabel();
+    
+    // Smooth scroll for navigation links
+    document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+          
+          // Update active nav state
+          document.querySelectorAll('nav a').forEach(link => link.classList.remove('active'));
+          this.classList.add('active');
+        }
+      });
+    });
+    
+    // Update active nav state on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('nav a');
+    
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        if (scrollY >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+      
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
