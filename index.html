@@ -320,9 +320,25 @@
       box-shadow: 0 0 0 4px rgba(58, 96, 110, 0.20);
     }
 
+    .brand-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
     .brand-name {
       font: 600 1.125rem/1.2 'Inter', sans-serif;
       color: var(--text);
+    }
+
+    .brand-linkedin {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      color: var(--primary-light);
+    }
+
+    .brand-linkedin:hover {
+      opacity: 1;
     }
 
     nav {
@@ -870,8 +886,11 @@
       <div class="header-content">
         <div class="brand">
           <div class="brand-dot" aria-hidden="true"></div>
-          <span class="brand-name">Chris Dumler</span>
-          <span class="pill">AI Interaction Designer</span>
+          <div class="brand-info">
+            <span class="brand-name">Chris Dumler</span>
+            <a href="https://www.linkedin.com/in/chrisdumler/" target="_blank" rel="noopener" class="brand-linkedin link-primary link-external">linkedin.com/in/chrisdumler</a>
+          </div>
+          <span class="pill">Human-AI Interaction Designer</span>
         </div>
         <div style="display: flex; align-items: center; gap: 1rem;">
           <nav aria-label="Primary navigation">
