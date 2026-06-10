@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IVEP · Visual Entity Project · Chris Dumler</title>
+<meta name="description" content="IVEP (Visual Entity Project): an interactive web experience where text becomes fluid, ink-like motion instead of written replies. A test of what happens when language becomes behavior." />
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="brand" href="index.html">Chris Dumler<b>.</b></a>
+    <nav class="topnav">
+      <a href="index.html">Home</a>
+      <a href="work.html">← Work</a>
+      <a href="about.html">About</a>
+      <a href="index.html#contact"><span class="dot">●</span> Contact</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">☀</button>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <section class="proj-hero wrap" data-screen-label="IVEP hero">
+      <span class="kicker">Creative interface · generative motion · 2025</span>
+      <h1>IVEP</h1>
+      <p class="one-liner">An entity that answers a concept with <span class="accent">motion and color instead of words.</span></p>
+    </section>
+
+    <div class="wrap">
+      <div class="proj-shot reveal" data-diagram>
+        <svg viewBox="0 0 640 360" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A sketch of IVEP: a written concept passes through a grammar of shape, color, and motion and becomes a fluid, ink-like form instead of words.">
+          <defs>
+            <marker id="ivh" markerWidth="9" markerHeight="9" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="dg-tip" /></marker>
+          </defs>
+
+          <ellipse class="dg-wash blue" cx="478" cy="188" rx="116" ry="104" />
+          <ellipse class="dg-wash rose" cx="110" cy="150" rx="52" ry="50" />
+
+          <text class="dg-anno k" x="360" y="40">WORDS BECOME MOTION AND EMOTION</text>
+
+          <rect class="dg-box" x="34" y="150" width="118" height="52" rx="2.5" />
+          <text class="dg-label" x="93" y="180" text-anchor="middle">A CONCEPT</text>
+
+          <line class="dg-wire" x1="152" y1="176" x2="204" y2="176" marker-end="url(#ivh)" />
+
+          <rect class="dg-box" x="208" y="120" width="128" height="138" rx="2.5" />
+          <text class="dg-label" x="272" y="146" text-anchor="middle">GRAMMAR</text>
+          <line class="dg-wire" x1="224" y1="156" x2="320" y2="156" />
+          <text class="dg-anno bul" x="230" y="180">· shape</text>
+          <text class="dg-anno bul" x="230" y="202">· color</text>
+          <text class="dg-anno bul" x="230" y="224">· motion</text>
+          <text class="dg-anno bul" x="230" y="246">· emotion</text>
+
+          <line class="dg-wire" x1="336" y1="178" x2="396" y2="178" marker-end="url(#ivh)" />
+
+          <path d="M 470 116 C 545 108, 566 168, 542 212 C 524 246, 466 258, 430 236 C 396 214, 402 146, 470 116 Z" fill="var(--card)" stroke="var(--ink)" stroke-width="1.5" />
+          <circle cx="486" cy="182" r="18" fill="var(--accent)" opacity="0.45" />
+          <circle cx="516" cy="160" r="7" fill="var(--accent-2)" opacity="0.5" />
+          <text class="dg-anno" x="478" y="298" text-anchor="middle">the entity responds</text>
+        </svg>
+      </div>
+    </div>
+
+    <section class="wrap">
+      <div class="proj-body-grid">
+        <aside class="proj-facts reveal">
+          <div class="pf-row"><span class="k">Type</span><span class="v">Interactive web experience</span></div>
+          <div class="pf-row"><span class="k">Role</span><span class="v">Design &amp; build, end to end</span></div>
+          <div class="pf-row"><span class="k">Stack</span><span class="v mono">Three.js / P5.js<br />FastAPI backend<br />OpenAI · Anthropic · Gemini</span></div>
+          <div class="pf-row"><span class="k">The idea</span><span class="v">Text into visual behavior, not text into text</span></div>
+          <div class="pf-row"><span class="k">Inspiration</span><span class="v">The ink-like language in <em>Arrival</em></span></div>
+          <div class="pf-row"><span class="k">Status</span><span class="v">Working prototype</span></div>
+        </aside>
+
+        <div class="proj-prose reveal">
+          <h2>The problem</h2>
+          <p>Almost every AI interaction ends in a wall of text. You give a model a concept and it gives you sentences back. But plenty of the things worth expressing, a mood, a feeling, the shape of an idea, do not really want to be sentences. The question I wanted to sit with: what happens when language becomes behavior instead of text?</p>
+
+          <h2>What I built</h2>
+          <p>IVEP is a fluid, ink-like entity, inspired by the alien language in <em>Arrival</em>, that responds to a written input by changing how it moves, not by writing back. You type a concept and you watch the answer.</p>
+          <ul>
+            <li><strong>A visual grammar.</strong> The entity has a defined behavior language: shape transformations (expanding, contracting, pulsing, splitting, merging), a color vocabulary, and movement patterns, each mapped to the emotional register of the input.</li>
+            <li><strong>A 3D fluid body.</strong> Built in Three.js with physics-based, organic deformation, so the motion reads as a living thing reacting rather than a chart updating.</li>
+            <li><strong>A model in the middle.</strong> A FastAPI backend interprets the text into that behavior schema, with support for OpenAI, Anthropic, and Gemini so I could compare how different models read the same concept.</li>
+            <li><strong>Graceful offline mode.</strong> When the backend is not there, it falls back to client-side interpretation so the experience never just stops.</li>
+          </ul>
+
+          <h2>What it made possible</h2>
+          <p>A non-verbal channel for an AI response, something you watch instead of read. It also became a small testbed for cross-modal translation and for seeing, side by side, how different models interpret an abstract or emotional prompt when the output has to be behavior rather than prose.</p>
+
+          <h2>Why it matters</h2>
+          <p>This is the kind of interface work I care about: taking a poetic idea and turning it into a system that actually runs. It is a concrete argument that AI interaction does not have to mean a chat box, and that there is room to design responses you feel before you parse.</p>
+        </div>
+      </div>
+
+      <nav class="proj-nav">
+        <a class="prev" href="work.html"><span class="lab">Index</span>← all work</a>
+        <a class="next" href="index.html#work"><span class="lab">Next</span>Amara →</a>
+      </nav>
+    </div>
+
+    <section class="contact" id="contact" style="border-top:1px solid var(--line);" data-screen-label="Contact">
+      <div class="wrap contact-inner reveal">
+        <span class="eyebrow">Want the deeper version?</span>
+        <h2>Let's make something <span class="accent">real enough to react to.</span></h2>
+        <a class="mailto" href="mailto:chrisdumler@gmail.com">chrisdumler@gmail.com <span>↗</span></a>
+        <div class="contact-links">
+          <a href="work.html">More work</a>
+          <a href="about.html">About</a>
+          <a href="https://github.com/chrisdumler" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/chrisdumler/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+      <footer class="foot">
+        <span>© <span id="year">2026</span> Chris Dumler. Built, not generated.</span>
+        <span>Question → Prototype → Artifact</span>
+      </footer>
+    </section>
+
+  </main>
+
+  <script src="assets/main.js"></script>
+</body>
+</html>

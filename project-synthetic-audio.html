@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Synthetic audio research · Chris Dumler</title>
+<meta name="description" content="Selected synthetic audio research: a synthetic-voice generation pipeline that produces speech across a wide range of text-to-speech models, run reproducibly and evaluated, and operated as a long-running agent-native research effort. Some details are held private." />
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="brand" href="index.html">Chris Dumler<b>.</b></a>
+    <nav class="topnav">
+      <a href="index.html">Home</a>
+      <a href="work.html">← Work</a>
+      <a href="about.html">About</a>
+      <a href="index.html#contact"><span class="dot">●</span> Contact</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">☀</button>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <section class="proj-hero wrap" data-screen-label="Synthetic audio hero">
+      <span class="kicker">Selected work · synthetic voice · audio ML · 2025–26</span>
+      <h1>Synthetic audio research</h1>
+      <p class="one-liner">Generating convincing speech across the <span class="accent">whole fast-moving frontier of voice models.</span></p>
+    </section>
+
+    <div class="wrap">
+      <div class="proj-shot reveal" data-diagram>
+        <svg viewBox="0 0 640 360" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A sketch of the synthetic audio pipeline: one prompt fans out across many voice models, whose outputs converge into evaluation, including a human listening panel.">
+          <defs>
+            <marker id="sah" markerWidth="9" markerHeight="9" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="dg-tip" /></marker>
+          </defs>
+
+          <ellipse class="dg-wash blue" cx="300" cy="192" rx="120" ry="104" />
+          <ellipse class="dg-wash rose" cx="506" cy="160" rx="60" ry="56" />
+
+          <text class="dg-anno k" x="196" y="40">GENERATE ACROSS MANY MODELS</text>
+
+          <rect class="dg-box" x="30" y="158" width="110" height="48" rx="2.5" />
+          <text class="dg-label" x="85" y="186" text-anchor="middle">PROMPT</text>
+
+          <circle class="dg-box" cx="262" cy="86" r="13" />
+          <circle class="dg-box" cx="262" cy="138" r="13" />
+          <circle class="dg-box" cx="262" cy="190" r="13" />
+          <circle class="dg-box" cx="262" cy="242" r="13" />
+          <circle class="dg-box" cx="262" cy="294" r="13" />
+
+          <line class="dg-wire" x1="140" y1="178" x2="249" y2="92" />
+          <line class="dg-wire" x1="140" y1="180" x2="249" y2="140" />
+          <line class="dg-wire" x1="140" y1="182" x2="249" y2="190" />
+          <line class="dg-wire" x1="140" y1="184" x2="249" y2="240" />
+          <line class="dg-wire" x1="140" y1="186" x2="249" y2="290" />
+
+          <line class="dg-wire" x1="275" y1="92" x2="424" y2="172" />
+          <line class="dg-wire" x1="275" y1="140" x2="424" y2="178" />
+          <line class="dg-wire" x1="275" y1="190" x2="424" y2="184" marker-end="url(#sah)" />
+          <line class="dg-wire" x1="275" y1="242" x2="424" y2="190" />
+          <line class="dg-wire" x1="275" y1="294" x2="424" y2="196" />
+
+          <rect class="dg-box" x="428" y="150" width="156" height="64" rx="2.5" />
+          <text class="dg-label" x="506" y="178" text-anchor="middle">EVALUATION</text>
+          <text class="dg-anno" x="506" y="198" text-anchor="middle">+ human panel</text>
+        </svg>
+      </div>
+    </div>
+
+    <section class="wrap">
+      <div class="proj-body-grid">
+        <aside class="proj-facts reveal">
+          <div class="pf-row"><span class="k">Type</span><span class="v">Synthetic audio research, multi-phase</span></div>
+          <div class="pf-row"><span class="k">Role</span><span class="v">Design, research, and pipeline build, end to end</span></div>
+          <div class="pf-row"><span class="k">Focus</span><span class="v">Multi-model voice generation + evaluation</span></div>
+          <div class="pf-row"><span class="k">Models</span><span class="v">More than twenty, from open weights to commercial APIs</span></div>
+          <div class="pf-row"><span class="k">Run as</span><span class="v">Agent-operated, over many months</span></div>
+          <div class="pf-row"><span class="k">Status</span><span class="v">Active. Some details held private</span></div>
+        </aside>
+
+        <div class="proj-prose reveal">
+          <h2>The challenge</h2>
+          <p>Text-to-speech moves faster than almost any other corner of AI. New voice models land constantly, and each one arrives with its own character, its own strengths and failure modes, and its own awkward setup. Working seriously with synthetic voice means more than picking one model and calling an API. It means being able to generate across the whole moving frontier, and keeping up as it shifts month to month.</p>
+
+          <h2>What I built</h2>
+          <p>A synthetic-voice generation pipeline and the research practice around it, spanning more than twenty models and well over a hundred thousand generated samples. At a high level it does a few things well:</p>
+          <ul>
+            <li><strong>Generation across many models.</strong> Voice samples are produced from a wide set of text-to-speech systems, from open-weights models you self-host to commercial APIs.</li>
+            <li><strong>Deliberate model selection.</strong> Which models go in is a researched decision, and each candidate gets real diligence before it earns a place. That recurring need is what grew into <a href="project-amatlas.html">AMATLAS</a>, a reusable knowledge base of audio models.</li>
+            <li><strong>Reproducible by design.</strong> Each model runs in its own reproducible environment, so a generation run from months ago can be rebuilt and rerun exactly, and the work scales out across GPU cloud rather than living on one machine.</li>
+            <li><strong>Evaluation as a first-class step.</strong> Generated audio is scored and, where automated measures run out of road, judged by human listening panels.</li>
+          </ul>
+
+          <h2>Where the AI comes in</h2>
+          <p>This is also an example of agent-operated research. The program runs through Claude across multiple months, with the model facilitating the hands-on work: vetting and integrating new models into the pipeline, running and scoring experiments, and keeping the decision and session record that lets a months-long investigation stay coherent. It is the same way of working as the rest of my projects, applied to a serious, long-running research effort.</p>
+
+          <h2>Why it matters</h2>
+          <p>Synthetic voice is becoming a normal material to build with, and the gap is widening between people who can use one model and people who can work fluently across the whole field. This project is where I built that fluency: a disciplined, repeatable way to generate and study voice across many models at once, and a clear picture of how they actually behave once you push them.</p>
+        </div>
+      </div>
+
+      <nav class="proj-nav">
+        <a class="prev" href="work.html"><span class="lab">Index</span>← all work</a>
+        <a class="next" href="project-view-anew.html"><span class="lab">Next</span>View Anew →</a>
+      </nav>
+    </div>
+
+    <section class="contact" id="contact" style="border-top:1px solid var(--line);" data-screen-label="Contact">
+      <div class="wrap contact-inner reveal">
+        <span class="eyebrow">Want the deeper version?</span>
+        <h2>Let's make something <span class="accent">real enough to react to.</span></h2>
+        <a class="mailto" href="mailto:chrisdumler@gmail.com">chrisdumler@gmail.com <span>↗</span></a>
+        <div class="contact-links">
+          <a href="work.html">More work</a>
+          <a href="about.html">About</a>
+          <a href="https://github.com/chrisdumler" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/chrisdumler/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+      <footer class="foot">
+        <span>© <span id="year">2026</span> Chris Dumler. Built, not generated.</span>
+        <span>Question → Prototype → Artifact</span>
+      </footer>
+    </section>
+
+  </main>
+
+  <script src="assets/main.js"></script>
+</body>
+</html>

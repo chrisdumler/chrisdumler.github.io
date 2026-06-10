@@ -1,1368 +1,289 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chris Dumler · AI Interaction Designer</title>
-  <meta name="description" content="AI interaction designer focused on behavioral scaffolding, evaluation systems, and trustworthy AI conversations." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
-  <style>
-    /* ===== Design Tokens ===== */
-    :root {
-      /* Base Colors */
-      --bg: #0b0c10;
-      --surface: #121319;
-      --surface-elevated: #1a1d29;
-      --text: #e6e8eb;
-      --text-muted: #9aa0a6;
-      --text-subtle: #6b7280;
-
-      /* Brand Colors - Updated to Paynes/Sage palette */
-      --primary: #3a606e;        /* Paynes Gray */
-      --primary-dark: #2f505c;   /* Darker Paynes Gray (for depth) */
-      --primary-light: #5f8794;  /* Lighter Paynes Gray (hover/links) */
-
-      --secondary: #828e82;      /* Battleship Gray (lighter, for tags/cards) */
-      --secondary-dark: #6d776d; /* Darker Battleship for depth */
-
-      --accent: #aaae8e;         /* Sage */
-      --accent-dark: #95996f;    /* Darker Sage for gradients */
-
-      /* Contrast (on-color) tokens to ensure accessibility */
-      --on-primary: #ffffff;     /* Text on primary (dark) surfaces */
-      --on-secondary: #ffffff;   /* Text on secondary (medium-dark) surfaces */
-      --on-accent: #0f1416;      /* Text on accent (light) surfaces */
-
-      /* Interaction States (tinted to brand) */
-      --ring: rgba(58, 96, 110, 0.35);       /* Paynes Gray ring */
-      --hover-bg: rgba(255, 255, 255, 0.06);
-      --border: rgba(255, 255, 255, 0.08);
-      --border-hover: rgba(255, 255, 255, 0.15);
-
-      /* Spacing & Layout */
-      --container: min(1200px, 94vw);
-      --radius: 16px;
-      --radius-lg: 24px;
-      --shadow: 0 8px 32px rgba(0, 0, 0, 0.32);
-      --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.48);
-
-      /* Animation */
-      --ease: cubic-bezier(0.16, 1, 0.3, 1);
-      --duration: 0.3s;
-    }
-
-    @media (prefers-color-scheme: light) {
-      :root {
-        --bg: #f6f7fb;
-        --surface: #ffffff;
-        --surface-elevated: #ffffff;
-        --text: #111218;
-        --text-muted: #5b616e;
-        --text-subtle: #8b92a5;
-        --hover-bg: rgba(0, 0, 0, 0.04);
-        --border: rgba(0, 0, 0, 0.08);
-        --border-hover: rgba(0, 0, 0, 0.15);
-        --shadow: 0 8px 32px rgba(31, 41, 55, 0.08);
-        --shadow-lg: 0 16px 48px rgba(31, 41, 55, 0.12);
-        --ring: rgba(58, 96, 110, 0.25);
-      }
-    }
-
-    /* ===== Reset & Base ===== */
-    * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      scroll-behavior: smooth;
-      /* Ensure sticky positioning works */
-      position: relative;
-    }
-
-    body {
-      background:
-        radial-gradient(1400px 800px at 80% -20%, rgba(58, 96, 110, 0.10), transparent 60%),  /* Paynes Gray tint */
-        radial-gradient(1000px 600px at 20% 100%, rgba(170, 174, 142, 0.06), transparent 55%), /* Sage tint */
-        var(--bg);
-      color: var(--text);
-      font: 400 16px/1.6 'Inter', system-ui, -apple-system, sans-serif;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    img { max-width: 100%; height: auto; }
-    a { color: inherit; text-decoration: none; }
-
-    /* ===== Link Styling ===== */
-    .link-primary {
-      color: var(--primary-light);
-      text-decoration: none;
-      transition: all var(--duration) var(--ease);
-      position: relative;
-    }
-
-    .link-primary:hover {
-      color: var(--primary);
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-
-    .link-external::after {
-      content: "↗";
-      font-size: 0.875em;
-      margin-left: 0.25rem;
-      opacity: 0.7;
-      transition: all var(--duration) var(--ease);
-    }
-
-    .link-external:hover::after {
-      opacity: 1;
-      transform: translateX(1px) translateY(-1px);
-    }
-
-    .card-link {
-      color: inherit;
-      text-decoration: none;
-      display: block;
-      transition: all var(--duration) var(--ease);
-    }
-
-    .card-link:hover {
-      color: var(--primary-light);
-    }
-
-    .card-link:focus-visible {
-      outline: 2px solid var(--ring);
-      outline-offset: 2px;
-      border-radius: 4px;
-    }
-
-    .container {
-      width: var(--container);
-      margin: 0 auto;
-      padding: 0 1rem;
-    }
-
-    /* ===== Typography ===== */
-    .kicker {
-      font: 500 0.875rem/1.4 'JetBrains Mono', monospace;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin: 0 0 0.5rem;
-    }
-
-    h1 {
-      font: 600 clamp(2.25rem, 5vw, 3.5rem)/1.1 'Inter', sans-serif;
-      letter-spacing: -0.02em;
-      margin: 0 0 1.5rem;
-      background: linear-gradient(135deg, var(--text), var(--text-muted));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    h2 {
-      font: 600 clamp(1.5rem, 3vw, 2.25rem)/1.2 'Inter', sans-serif;
-      letter-spacing: -0.01em;
-      margin: 0 0 1rem;
-    }
-
-    .sub-heading {
-      font: 300 clamp(1.125rem, 2.5vw, 1.5rem)/1.4 'Inter', sans-serif;
-      font-weight: 300;
-      color: var(--text-muted);
-      margin-top: -1rem;
-      margin-bottom: 2rem;
-    }
-
-    h3 {
-      font: 500 1.125rem/1.3 'Inter', sans-serif;
-      margin: 0 0 0.5rem;
-    }
-
-    /* ===== Components ===== */
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.375rem 0.875rem;
-      border-radius: 999px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      font-size: 0.875rem;
-      color: var(--text-muted);
-    }
-
-    .tag {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      border-radius: 999px;
-      font: 500 0.8125rem/1.2 'Inter', sans-serif;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: var(--on-primary);
-    }
-
-    .tag.secondary {
-      background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
-      color: var(--on-accent);
-    }
-
-    .tag.accent {
-      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-      color: var(--on-accent);
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.875rem 1.25rem;
-      border-radius: 12px;
-      font: 500 1rem/1.2 'Inter', sans-serif;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-      transition: all var(--duration) var(--ease);
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow);
-      border-color: rgba(255, 255, 255, 0.25);
-    }
-
-    .btn.primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      border: none;
-      color: var(--on-primary);
-      font-weight: 600;
-    }
-
-    .btn.primary:hover {
-      box-shadow: 0 8px 32px rgba(58, 96, 110, 0.35);
-    }
-
-    /* ===== Theme Toggle ===== */
-    .theme-toggle {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--hover-bg);
-      cursor: pointer;
-      transition: all var(--duration) var(--ease);
-      font-size: 1.125rem;
-    }
-
-    .theme-toggle:hover {
-      background: var(--border);
-      border-color: var(--border-hover);
-    }
-
-    .theme-toggle:focus-visible {
-      outline: 2px solid var(--ring);
-      outline-offset: 2px;
-    }
-
-    /* Simple two-state toggle: show opposite of current theme */
-    [data-theme="light"] .theme-toggle .moon { display: none; }
-    [data-theme="dark"] .theme-toggle .sun { display: none; }
-    
-    /* Default state (no data-theme) shows sun (click to go dark) */
-    body:not([data-theme]) .theme-toggle .moon { display: none; }
-
-    /* Accessible focus styles */
-    .btn:focus-visible,
-    nav a:focus-visible,
-    .tag:focus-visible,
-    .theme-toggle:focus-visible {
-      outline: 2px solid var(--ring);
-      outline-offset: 2px;
-      box-shadow: 0 0 0 4px rgba(58, 96, 110, 0.2);
-    }
-
-    /* ===== Header ===== */
-    header {
-      /* Non-sticky header for clean, content-focused experience */
-      position: relative;
-      z-index: 100;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 1px 0 0 var(--border);
-      width: 100%;
-    }
-
-    .header-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 0;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .brand-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #ffffff, var(--primary) 40%, var(--primary-dark) 70%);
-      box-shadow: 0 0 0 4px rgba(58, 96, 110, 0.20);
-    }
-
-    .brand-info {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    .brand-name {
-      font: 600 1.125rem/1.2 'Inter', sans-serif;
-      color: var(--text);
-    }
-
-    .brand-linkedin {
-      font-size: 0.875rem;
-      opacity: 0.8;
-      color: var(--primary-light);
-    }
-
-    .brand-linkedin:hover {
-      opacity: 1;
-    }
-
-    nav {
-      display: flex;
-      gap: 0.25rem;
-      background: rgba(255, 255, 255, 0.04);
-      padding: 0.25rem;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-    }
-
-    nav a {
-      padding: 0.625rem 1rem;
-      border-radius: 8px;
-      color: var(--text);
-      opacity: 0.7;
-      font: 500 0.9375rem/1.2 'Inter', sans-serif;
-      transition: all var(--duration) var(--ease);
-      position: relative;
-    }
-
-    nav a:hover {
-      background: var(--hover-bg);
-      opacity: 1;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    nav a.active {
-      background: var(--primary);
-      color: var(--on-primary);
-      opacity: 1;
-    }
-
-    /* ===== Hero Section ===== */
-    .hero {
-      padding: 5rem 0 4rem;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 3rem;
-      align-items: center;
-    }
-
-    .hero-content {
-      max-width: 600px;
-    }
-
-    .hero-lede {
-      font-size: 1.125rem;
-      color: var(--text-muted);
-      line-height: 1.7;
-      margin: 0 0 2rem;
-    }
-
-    .hero-ctas {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      align-items: center;
-      margin-bottom: 2rem;
-    }
-
-    .hero-card {
-      background: var(--surface);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .stat {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 1.25rem;
-      transition: all var(--duration) var(--ease);
-    }
-
-    .stat:hover {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
-      border-color: rgba(255, 255, 255, 0.15);
-      transform: translateY(-1px);
-    }
-
-    .stat-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 0.75rem;
-      gap: 1rem;
-    }
-
-    .stat-number {
-      font: 600 1.875rem/1.2 'Inter', sans-serif;
-      color: var(--text);
-      margin: 0;
-    }
-
-    .stat-label {
-      color: var(--text-muted);
-      font-size: 0.9375rem;
-      line-height: 1.4;
-      margin: 0;
-    }
-
-    /* ===== Sections ===== */
-    section {
-      padding: 4rem 0;
-    }
-
-    .section-header {
-      margin-bottom: 2.5rem;
-    }
-
-    /* ===== Work Grid ===== */
-    .work-grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 1.5rem;
-    }
-
-    .work-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      box-shadow: var(--shadow);
-      transition: all var(--duration) var(--ease);
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .work-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--border-hover);
-      background: var(--surface-elevated);
-    }
-
-    .work-card.featured { 
-      grid-column: span 8; 
-      border: 2px solid var(--primary);
-      background: linear-gradient(135deg, var(--surface-elevated), var(--surface));
-    }
-    .work-card.secondary { grid-column: span 4; }
-    .work-card.tertiary { grid-column: span 6; }
-
-    .card-thumb {
-      height: 180px;
-      border-radius: 12px;
-      background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.03),
-        rgba(255, 255, 255, 0.01)
-      );
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      margin-bottom: 1.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-subtle);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.875rem;
-    }
-
-    .work-card.featured .card-thumb {
-      height: 220px;
-      background: linear-gradient(135deg,
-        rgba(58, 96, 110, 0.15),
-        rgba(58, 96, 110, 0.05)
-      );
-      border: 1px solid rgba(58, 96, 110, 0.2);
-    }
-
-    .card-embed {
-      margin-bottom: 1.25rem;
-      border-radius: 12px;
-      overflow: hidden;
-      background: linear-gradient(135deg, rgba(58, 96, 110, 0.15), rgba(58, 96, 110, 0.05));
-      border: 1px solid rgba(58, 96, 110, 0.2);
-    }
-
-    .card-embed a {
-      display: none; /* Hide the link since it's redundant with the iframe */
-    }
-
-    .work-card.featured h3 {
-      font-size: 1.375rem;
-      line-height: 1.3;
-    }
-
-    .work-card.featured .card-description {
-      font-size: 1.0625rem;
-      line-height: 1.7;
-    }
-
-    .card-content h3 {
-      margin-bottom: 0.75rem;
-    }
-
-    .card-description {
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-      line-height: 1.6;
-    }
-
-    .card-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      align-items: center;
-    }
-
-    .metric {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.875rem;
-      color: var(--text-subtle);
-    }
-
-    .metric-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--primary);
-    }
-
-    /* ===== Methods Section ===== */
-    .methods-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-    }
-
-    .method-card {
-      background: var(--surface);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      box-shadow: var(--shadow);
-    }
-
-    .method-card h3 {
-      margin-bottom: 0.75rem;
-    }
-
-    .method-description {
-      color: var(--text-muted);
-      margin-bottom: 1.25rem;
-    }
-
-    pre {
-      background: #0a0d14;
-      color: #c9d1d9;
-      padding: 1.25rem;
-      border-radius: 12px;
-      overflow-x: auto;
-      font: 400 0.875rem/1.5 'JetBrains Mono', monospace;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    /* Mobile-optimized code blocks */
-    @media (max-width: 768px) {
-      pre {
-        padding: 0.875rem;
-        font-size: 0.8125rem;
-        line-height: 1.6;
-        border-radius: 8px;
-      }
-      
-      /* Better touch scrolling for code blocks */
-      pre {
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: thin;
-      }
-    }
-
-    @media (max-width: 480px) {
-      pre {
-        padding: 0.75rem;
-        font-size: 0.8rem;
-        margin: 0.5rem 0 0 0;
-      }
-    }
-
-    .rubric-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .rubric-list li {
-      padding: 0.5rem 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      color: var(--text-muted);
-    }
-
-    .rubric-list li:last-child {
-      border-bottom: none;
-    }
-
-    .rubric-list strong {
-      color: var(--text);
-    }
-
-    /* ===== Writing Section ===== */
-    .writing-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
-
-    .writing-card {
-      background: var(--surface);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      box-shadow: var(--shadow);
-      transition: all var(--duration) var(--ease);
-      cursor: pointer;
-    }
-
-    .writing-card:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
-      border-color: rgba(255, 255, 255, 0.15);
-    }
-
-    /* ===== Contact Section ===== */
-    .contact-card {
-      background: var(--surface);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius);
-      padding: 2rem;
-      box-shadow: var(--shadow);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-    }
-
-    .contact-info p {
-      margin: 0 0 1rem;
-    }
-
-    .contact-info a {
-      color: var(--accent);
-      text-decoration: underline;
-      text-underline-offset: 2px;
-      transition: color var(--duration) var(--ease);
-    }
-
-    .contact-info a:hover {
-      color: var(--accent-dark);
-    }
-
-    .focus-areas {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-top: 1rem;
-    }
-
-    /* ===== Footer ===== */
-    footer {
-      padding: 3rem 0 4rem;
-      color: var(--text-subtle);
-      text-align: center;
-    }
-
-    /* ===== Manual Theme Overrides ===== */
-    /* When user manually selects light theme */
-    [data-theme="light"] {
-      --bg: #f6f7fb;
-      --surface: #ffffff;
-      --surface-elevated: #ffffff;
-      --text: #111218;
-      --text-muted: #5b616e;
-      --text-subtle: #8b92a5;
-      --hover-bg: rgba(0, 0, 0, 0.04);
-      --border: rgba(0, 0, 0, 0.08);
-      --border-hover: rgba(0, 0, 0, 0.15);
-      --shadow: 0 8px 32px rgba(31, 41, 55, 0.08);
-      --shadow-lg: 0 16px 48px rgba(31, 41, 55, 0.12);
-      --ring: rgba(58, 96, 110, 0.25);
-    }
-
-    /* When user manually selects dark theme */
-    [data-theme="dark"] {
-      --bg: #0b0c10;
-      --surface: #121319;
-      --surface-elevated: #1a1d29;
-      --text: #e6e8eb;
-      --text-muted: #9aa0a6;
-      --text-subtle: #6b7280;
-      --hover-bg: rgba(255, 255, 255, 0.06);
-      --border: rgba(255, 255, 255, 0.08);
-      --border-hover: rgba(255, 255, 255, 0.15);
-      --shadow: 0 8px 32px rgba(0, 0, 0, 0.32);
-      --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.48);
-      --ring: rgba(58, 96, 110, 0.35);
-    }
-
-    /* ===== Responsive ===== */
-    @media (max-width: 1024px) {
-      .hero-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        text-align: center;
-      }
-
-      .work-card.featured { grid-column: span 12; }
-      .work-card.secondary { grid-column: span 6; }
-      .work-card.tertiary { grid-column: span 12; }
-
-      .methods-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 900px) {
-      .work-card.featured { grid-column: span 12; }
-      .work-card.secondary { grid-column: span 6; }
-      .work-card.tertiary { grid-column: span 12; }
-    }
-
-    @media (max-width: 768px) {
-      .header-content {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-      }
-
-      nav {
-        justify-content: center;
-        flex-wrap: wrap;
-      }
-
-      .hero {
-        padding: 3rem 0 2rem;
-      }
-
-      section {
-        padding: 2.5rem 0;
-      }
-
-      .work-card.secondary { grid-column: span 12; }
-
-      .hero-ctas {
-        justify-content: center;
-      }
-
-      .writing-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .contact-card {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .hero-ctas {
-        flex-direction: column;
-        width: 100%;
-      }
-
-      .btn {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .tag {
-        padding: 0.375rem 0.875rem; /* Increased from 0.25rem 0.75rem for better touch targets */
-        font-size: 0.875rem; /* Increased from 0.8125rem for better readability */
-      }
-
-      /* Hero card mobile improvements */
-      .hero-card {
-        padding: 1.25rem;
-        gap: 0.875rem;
-      }
-
-      .stat {
-        padding: 1rem;
-      }
-
-      .stat-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.75rem;
-        margin-bottom: 0.5rem;
-      }
-
-      .stat-number {
-        font-size: 1.5rem;
-        order: 2;
-      }
-
-      .tag {
-        order: 1;
-      }
-
-      .stat-label {
-        font-size: 0.875rem;
-        line-height: 1.5;
-      }
-    }
-
-    /* ===== Animations ===== */
-    @media (prefers-reduced-motion: no-preference) {
-      .work-card {
-        animation: fade-up 0.6s var(--ease) both;
-      }
-
-      .work-card:nth-child(1) { animation-delay: 0.1s; }
-      .work-card:nth-child(2) { animation-delay: 0.2s; }
-      .work-card:nth-child(3) { animation-delay: 0.3s; }
-      .work-card:nth-child(4) { animation-delay: 0.4s; }
-      .work-card:nth-child(5) { animation-delay: 0.5s; }
-
-      @keyframes fade-up {
-        from {
-          opacity: 0;
-          transform: translateY(24px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chris Dumler | Experimental AI systems for creative work</title>
+<meta name="description" content="Chris Dumler builds experimental AI systems for creative work: synthetic audio pipelines, AI characters, prompt systems, model behavior, and working prototypes." />
+<link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
-  <!-- ===== Header ===== -->
-  <header>
-    <div class="container">
-      <div class="header-content">
-        <div class="brand">
-          <div class="brand-dot" aria-hidden="true"></div>
-          <div class="brand-info">
-            <span class="brand-name">Chris Dumler</span>
-            <a href="https://www.linkedin.com/in/chrisdumler/" target="_blank" rel="noopener" class="brand-linkedin link-primary link-external">linkedin.com/in/chrisdumler</a>
-          </div>
-          <span class="pill">Human-AI Interaction Designer</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 1rem;">
-          <nav aria-label="Primary navigation">
-            <a href="#about">About</a>
-            <a href="#work">Work</a>
-            <a href="#methods">Methods</a>
-            <a href="#writing">Writing</a>
-            <a href="#contact">Contact</a>
-          </nav>
-          <button class="theme-toggle" aria-label="Toggle light/dark mode" id="theme-toggle">
-            <span class="sun">☀️</span>
-            <span class="moon">🌙</span>
-          </button>
-        </div>
-      </div>
-    </div>
+
+  <!-- ================= TOP BAR ================= -->
+  <header class="topbar">
+    <a class="brand" href="index.html">Chris Dumler<b>.</b></a>
+    <nav class="topnav">
+      <a href="#answer">Through-line</a>
+      <a href="work.html">Work</a>
+      <a href="about.html">About</a>
+      <a href="#contact"><span class="dot">●</span> Contact</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">☀</button>
+    </nav>
   </header>
 
-  <!-- ===== Hero ===== -->
-  <section class="hero" id="about">
-    <div class="container">
-      <div class="hero-grid">
-        <div class="hero-content">
-          <p class="kicker">Human–AI Collaboration</p>
-          <h1>I help humans and AI work together without being weird *</h1>
-          <p class="hero-lede"><i>* unless you want weird - I can do weird</i></p>
-            <h2 class="sub-heading">rooted in Tinder-scale lessons and years of daily AI experiments</h2>
-          <p class="hero-lede">From scribbled ideas to working systems, usually in an afternoon. My practice blends the technical depth of evaluation frameworks with the practical reality of "does this actually help people?" The best AI interactions feel natural and helpful rather than mechanical.</p>
-          <div class="hero-ctas">
-            <a class="btn primary" href="#contact">Let's collaborate</a>
-            <a class="btn" href="#work">See selected work</a>
-          </div>
-        </div>
-        <div class="hero-card">
-          <div class="stat">
-            <div class="stat-header">
-              <div class="stat-number">2.5hrs</div>
-              <span class="tag">Methodology</span>
-            </div>
-            <div class="stat-label">Structured approach that turns ideas into working systems quickly</div>
-          </div>
-          <div class="stat">
-            <div class="stat-header">
-              <div class="stat-number">Memory</div>
-              <span class="tag secondary">Context</span>
-            </div>
-            <div class="stat-label">AI that actually remembers the conversation — context management and protocols that work</div>
-          </div>
-          <div class="stat">
-            <div class="stat-header">
-              <div class="stat-number">50M+</div>
-              <span class="tag accent">Scale</span>
-            </div>
-            <div class="stat-label">Analytics experience with 50M+ user behavioral data — what interaction patterns actually survive at scale</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <main id="top">
 
-  <!-- ===== Work ===== -->
-  <section id="work">
-    <div class="container">
-      <div class="section-header">
-        <p class="kicker">Selected Work</p>
-        <h2>From collaboration frameworks to behavioral analysis</h2>
+    <!-- ================= HERO ================= -->
+    <section class="hero wrap" data-screen-label="Hero">
+      <div class="hero-q reveal">
+        <span class="eyebrow">Chris Dumler, creative AI builder</span>
+        <h1 class="hero-headline">
+          <span class="q">I build experimental</span>
+          <span class="accent-rose">AI systems</span>
+          <span class="q">for creative work.</span>
+        </h1>
+        <p class="hero-sub">I work with synthetic audio, AI characters, prompt systems, and model behavior, turning rough creative ideas into working tools, demos, and artifacts.</p>
+        <div class="hero-cta">
+          <a class="btn" href="#work">See the work <span class="arr">↗</span></a>
+          <a class="btn ghost" href="work.html">The work</a>
+        </div>
       </div>
-      <div class="work-grid">
-        <!-- Featured Card -->
-        <div class="work-card featured">
-          <div class="card-embed">
-            <div style="position:relative;width:100%;height:0;padding-bottom:56.25%;">
-              <iframe allow="clipboard-write" allowfullscreen 
-                      style="position:absolute; width: 100%; height: 100%;border: solid 1px #333;" 
-                      src="https://www.beautiful.ai/embed/-OZD-PZrPM9IGLRsOLoW?utm_source=beautiful_player&utm_medium=embed&utm_campaign=-OZCZJlrmZ7P3WMKcw1G">
-              </iframe>
-              <a href="https://www.beautiful.ai/embed/-OZD-PZrPM9IGLRsOLoW?utm_source=beautiful_player&utm_medium=embed&utm_campaign=-OZCZJlrmZ7P3WMKcw1G">
-                View Scaling Quality with the AI PM Methodology on Beautiful.ai
-              </a>
-            </div>
+
+      <!-- hand-drawn systems diagram -->
+      <div class="hero-diagram reveal" role="img" aria-label="A sketch of how an AI interaction system behaves: user input is interpreted, shapes model behavior, and produces a response, looped back through feedback and read against human context (intent, emotion, situation, history).">
+        <svg viewBox="0 0 600 470" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <marker id="ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" class="dg-tip" />
+            </marker>
+            <marker id="ahf" markerWidth="9" markerHeight="9" refX="6.5" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="var(--ink-faint)" />
+            </marker>
+          </defs>
+
+          <!-- watercolor washes -->
+          <ellipse class="dg-wash blue" cx="274" cy="178" rx="88" ry="72" />
+          <ellipse class="dg-wash rose" cx="500" cy="210" rx="58" ry="66" />
+
+          <!-- USER INPUT -->
+          <text class="dg-anno" x="44" y="88">USER INPUT</text>
+          <line class="dg-wire" x1="70" y1="100" x2="70" y2="152" marker-end="url(#ah)" />
+
+          <!-- box: INTERPRET -->
+          <rect class="dg-box" x="44" y="158" width="98" height="46" rx="2.5" />
+          <text class="dg-label" x="93" y="186" text-anchor="middle">INTERPRET</text>
+
+          <!-- box: MODEL BEHAVIOR -->
+          <rect class="dg-box" x="214" y="150" width="120" height="62" rx="2.5" />
+          <text class="dg-label" x="274" y="177" text-anchor="middle">MODEL</text>
+          <text class="dg-label" x="274" y="195" text-anchor="middle">BEHAVIOR</text>
+
+          <!-- box: RESPONSE -->
+          <rect class="dg-box" x="406" y="158" width="98" height="46" rx="2.5" />
+          <text class="dg-label" x="455" y="186" text-anchor="middle">RESPONSE</text>
+
+          <!-- box-to-box arrows -->
+          <line class="dg-wire" x1="142" y1="181" x2="208" y2="181" marker-end="url(#ah)" />
+          <line class="dg-wire" x1="334" y1="181" x2="400" y2="181" marker-end="url(#ah)" />
+
+          <!-- Goal annotation -->
+          <text class="dg-anno k" x="476" y="58">Goal:</text>
+          <text class="dg-anno" x="476" y="74">make the idea easier</text>
+          <text class="dg-anno" x="476" y="89">to hear, test,</text>
+          <text class="dg-anno" x="476" y="104">and shape.</text>
+
+          <!-- RESPONSE -> HUMAN CONTEXT -->
+          <line class="dg-wire" x1="504" y1="178" x2="528" y2="178" marker-end="url(#ah)" />
+          <text class="dg-anno k" x="520" y="156">HUMAN CONTEXT</text>
+          <text class="dg-anno bul" x="528" y="178">· intent</text>
+          <text class="dg-anno bul" x="528" y="194">· emotion</text>
+          <text class="dg-anno bul" x="528" y="210">· situation</text>
+          <text class="dg-anno bul" x="528" y="226">· history</text>
+
+          <!-- RESPONSE -> OUTCOME -->
+          <line class="dg-wire" x1="472" y1="206" x2="472" y2="306" marker-end="url(#ah)" />
+          <text class="dg-anno k" x="452" y="326">OUTCOME:</text>
+          <text class="dg-anno" x="452" y="342">tool</text>
+          <text class="dg-anno" x="452" y="358">demo</text>
+          <text class="dg-anno" x="452" y="374">artifact</text>
+
+          <!-- FEEDBACK LOOP arc -->
+          <path class="dg-wire dash" d="M 426 207 C 360 372, 150 372, 95 209" marker-end="url(#ahf)" />
+          <text class="dg-feedlabel" x="258" y="360" text-anchor="middle">Feedback loop</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ================= ANSWER / MANIFESTO ================= -->
+    <section class="answer" id="answer">
+      <div class="wrap answer-grid">
+        <div class="answer-side reveal">
+          <span class="eyebrow">The through-line</span>
+          <p class="answer-lead">I help creative people figure out what AI can actually do by building with it.</p>
+          <div class="equation" aria-hidden="true">
+            <div class="eq-cell"><span class="eq-k">rough idea</span><span class="eq-v">Question</span></div>
+            <div class="eq-op">→</div>
+            <div class="eq-cell"><span class="eq-k">working test</span><span class="eq-v">Prototype</span></div>
+            <div class="eq-op">→</div>
+            <div class="eq-cell"><span class="eq-k">real signal</span><span class="eq-v">Artifact</span></div>
           </div>
-          <div class="card-content">
-            <h3><a href="https://github.com/chrisdumler/food-truck-research-agents" target="_blank" rel="noopener" class="link-primary link-external">
-              Personalized AI Collaboration: From Generic Assistants to Real Teammates
-            </a></h3>
-            <p class="card-description"><strong>What it is:</strong> Most AI assistants are designed for "everyone," which means they are optimized for no one. I created personalized AI collaborators designed around specific thinking patterns - like Pemtu, an AI PM built for ADHD brains and startup pace.<br><br><strong>How it works:</strong> Instead of generic prompts, I design AI characters with explicit role definitions, communication protocols, and understanding of individual thinking styles. Pemtu knows how to brainstorm with rapid ideation, manage AI coding agents, and maintain systematic documentation - all while matching my natural workflow patterns.<br><br><strong>Why it matters:</strong> This turns AI from a tool you manage into a teammate you collaborate with. The multi-agent research system was just proof of concept - built in a 2.5-hour sprint because the collaboration felt natural instead of like managing a weird tool. There are ethical questions about AI that adapts to individual patterns, but they're worth exploring.</p>
-            <div class="card-meta">
-              <span class="tag">Collaboration</span>
-              <span class="tag secondary">Methodology</span>
-              <div class="metric">
-                <div class="metric-dot"></div>
-                2.5 hours concept-to-code
+        </div>
+        <div class="answer-body reveal">
+          <p>A lot of creative work starts before the idea is clean. It might be a phrase, a sound, a mood, a question, or a weird little signal that feels like it has something in it.</p>
+          <p>That's where I like to work. I use AI to make those early signals easier to hear, test, shape, and turn into something real. Not by replacing the artist's judgment, but by giving them material they can react to.</p>
+          <p>Sometimes that means careful prompt architecture and model behavior. Sometimes it means synthetic voices, character systems, music sketches, strange inputs, broken formatting, or red-team-style experiments that reveal what the model can do off the clean path.</p>
+          <p>The point isn't to make AI seem magical. It's to make it usable as a creative material.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FEATURED CREATIVE WORK ================= -->
+    <section class="work" id="work">
+      <div class="wrap">
+        <div class="work-head reveal">
+          <span class="eyebrow">Featured creative work</span>
+          <a class="section-link" href="work.html">All projects <span>↗</span></a>
+        </div>
+
+        <div class="work-cards">
+
+          <a class="wcard reveal" href="project-amara.html">
+            <div class="wcard-shot" data-diagram>
+              <svg viewBox="0 0 320 220" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Amara: a durable plain-text brain linked to a swappable stack of models.">
+                <defs><marker id="art" markerWidth="9" markerHeight="9" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="dg-tip" /></marker></defs>
+                <ellipse class="dg-wash blue" cx="86" cy="110" rx="72" ry="64" />
+                <ellipse class="dg-wash rose" cx="240" cy="108" rx="62" ry="60" />
+                <rect class="dg-box" x="22" y="66" width="104" height="92" rx="2.5" />
+                <text class="dg-label" x="74" y="92" text-anchor="middle">BRAIN</text>
+                <text class="dg-anno" x="74" y="116" text-anchor="middle">plain text</text>
+                <text class="dg-anno" x="74" y="134" text-anchor="middle">portable</text>
+                <line class="dg-wire" x1="126" y1="104" x2="160" y2="104" marker-end="url(#art)" />
+                <line class="dg-wire" x1="160" y1="120" x2="128" y2="120" marker-end="url(#art)" />
+                <rect class="dg-box" x="168" y="80" width="82" height="62" rx="2.5" />
+                <rect class="dg-box" x="182" y="70" width="82" height="62" rx="2.5" />
+                <rect class="dg-box" x="196" y="60" width="82" height="62" rx="2.5" />
+                <text class="dg-label" x="237" y="88" text-anchor="middle">MODEL</text>
+                <text class="dg-anno" x="237" y="106" text-anchor="middle">swappable</text>
+              </svg>
+            </div>
+            <div class="wcard-body">
+              <span class="wcard-cat">Characters · personal system</span>
+              <h3>Amara</h3>
+              <p>A persistent AI collaborator with a real point of view, made durable by a memory architecture that outlives any single model.</p>
+              <span class="wcard-link">View project <span>→</span></span>
+            </div>
+          </a>
+
+          <a class="wcard reveal" href="project-ivep.html">
+            <div class="wcard-shot" data-diagram>
+              <svg viewBox="0 0 320 220" preserveAspectRatio="xMidYMid meet" role="img" aria-label="IVEP: a concept becomes a fluid, ink-like form.">
+                <defs><marker id="ivt" markerWidth="9" markerHeight="9" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="dg-tip" /></marker></defs>
+                <ellipse class="dg-wash blue" cx="224" cy="112" rx="84" ry="72" />
+                <ellipse class="dg-wash rose" cx="58" cy="96" rx="44" ry="42" />
+                <rect class="dg-box" x="20" y="90" width="92" height="42" rx="2.5" />
+                <text class="dg-label" x="66" y="116" text-anchor="middle">CONCEPT</text>
+                <line class="dg-wire" x1="112" y1="111" x2="150" y2="111" marker-end="url(#ivt)" />
+                <path d="M 196 58 C 258 52, 280 102, 260 142 C 244 174, 196 184, 166 164 C 138 144, 142 82, 196 58 Z" fill="var(--card)" stroke="var(--ink)" stroke-width="1.5" />
+                <circle cx="210" cy="112" r="16" fill="var(--accent)" opacity="0.45" />
+                <circle cx="236" cy="92" r="7" fill="var(--accent-2)" opacity="0.5" />
+                <text class="dg-anno" x="212" y="198" text-anchor="middle">becomes motion</text>
+              </svg>
+            </div>
+            <div class="wcard-body">
+              <span class="wcard-cat">Interface · generative motion</span>
+              <h3>IVEP</h3>
+              <p>An interactive experience where a concept becomes fluid, ink-like motion instead of words. A test of what happens when language becomes behavior.</p>
+              <span class="wcard-link">View project <span>→</span></span>
+            </div>
+          </a>
+
+          <a class="wcard reveal" href="project-claude-debrief.html">
+            <div class="wcard-shot" data-diagram>
+              <svg viewBox="0 0 320 220" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Three sources triangulate into a rebuilt mental model.">
+                <defs><marker id="cdt" markerWidth="9" markerHeight="9" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="dg-tip" /></marker></defs>
+                <ellipse class="dg-wash blue" cx="150" cy="110" rx="82" ry="66" />
+                <rect class="dg-box" x="22" y="48" width="74" height="30" rx="2.5" /><text class="dg-anno" x="59" y="68" text-anchor="middle">human</text>
+                <rect class="dg-box" x="22" y="94" width="74" height="30" rx="2.5" /><text class="dg-anno" x="59" y="114" text-anchor="middle">code</text>
+                <rect class="dg-box" x="22" y="140" width="74" height="30" rx="2.5" /><text class="dg-anno" x="59" y="160" text-anchor="middle">in-process</text>
+                <line class="dg-wire" x1="96" y1="63" x2="150" y2="98" marker-end="url(#cdt)" />
+                <line class="dg-wire" x1="96" y1="109" x2="150" y2="109" marker-end="url(#cdt)" />
+                <line class="dg-wire" x1="96" y1="155" x2="150" y2="120" marker-end="url(#cdt)" />
+                <rect class="dg-box" x="154" y="88" width="80" height="44" rx="2.5" /><text class="dg-label" x="194" y="114" text-anchor="middle">DEBRIEF</text>
+                <line class="dg-wire" x1="234" y1="110" x2="276" y2="110" marker-end="url(#cdt)" />
+                <text class="dg-anno" x="280" y="106">mental</text><text class="dg-anno" x="280" y="120">model</text>
+              </svg>
+            </div>
+            <div class="wcard-body">
+              <span class="wcard-cat">Skill · process</span>
+              <h3>claude-debrief</h3>
+              <p>A structured debrief that rebuilds the human's mental model of a system built largely through agent sessions. Made for re-engaging with the work, not for writing a retrospective.</p>
+              <span class="wcard-link">View project <span>→</span></span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= APPROACH + COLOPHON ================= -->
+    <section class="approach-sec" id="who">
+      <div class="wrap approach-grid">
+
+        <div class="approach reveal">
+          <span class="eyebrow rose">My approach</span>
+          <ul class="approach-list">
+            <li>
+              <span class="ap-mark" aria-hidden="true">
+                <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" fill="none" stroke-width="1.4"></circle><circle cx="10" cy="10" r="2.4" data-fill></circle></svg>
+              </span>
+              <div>
+                <h3>Start with the actual creative problem</h3>
+                <p>Don't force the person into the tool. Figure out what they're trying to explore, make, hear, test, or understand.</p>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Secondary Cards -->
-        <div class="work-card secondary">
-          <div class="card-thumb">Advanced AI evaluation</div>
-          <div class="card-content">
-            <h3><a href="https://github.com/chrisdumler/APL-ContextAware" target="_blank" rel="noopener" class="link-primary link-external">
-              AI Evaluation: Cultural Intelligence Framework
-            </a></h3>
-            <p class="card-description"><strong>What it is:</strong> Advanced evaluation system that goes beyond traditional accuracy metrics to measure cultural bias, contextual appropriateness, and behavioral equity in AI systems.<br><br><strong>How it works:</strong> Generates systematic cultural communication test scenarios (British politeness, professional formality, hierarchical respect), then provides side-by-side comparative analysis of baseline vs. culturally-intelligent responses with automated bias detection.<br><br><strong>Why it matters:</strong> As AI gets more sophisticated, traditional evaluation metrics start missing the stuff that actually matters to users. This framework helps catch bias issues before they become user experience problems.</p>
-            <div class="card-meta">
-              <span class="tag">Advanced Evaluation</span>
-              <span class="tag secondary">Cultural Intelligence</span>
-              <div class="metric">
-                <div class="metric-dot"></div>
-                Novel cultural bias detection methodology
+            </li>
+            <li>
+              <span class="ap-mark" aria-hidden="true">
+                <svg viewBox="0 0 20 20"><path d="M10 3 L17 10 L10 17 L3 10 Z" fill="none" stroke-width="1.4" stroke-linejoin="round"></path></svg>
+              </span>
+              <div>
+                <h3>Build small working things</h3>
+                <p>I'd rather make a rough prototype than talk about a perfect concept. The prototype tells you what is real.</p>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="work-card secondary">
-          <div class="card-thumb">→ Scale insights ←</div>
-          <div class="card-content">
-            <h3>Patterns at scale: analytics insights → product (Tinder)</h3>
-            <p class="card-description"><strong>What it is:</strong> Data science work at Tinder, translating user behavior data into business decisions and team practices.<br><br><strong>How it works:</strong> Used analytics from 50M+ users to guide interactions, business goals, safety patterns, and culture practices. Built systems that maintained quality while scaling fast.<br><br><strong>Why it matters:</strong> Working at Tinder scale teaches you things you can't learn anywhere else - like how user behavior changes when millions of people are using your system at once, how small changes cascade across massive user bases, and how to maintain human connection even when everything's automated.</p>
-            <div class="card-meta">
-              <span class="tag accent">Scale</span>
-              <span class="tag">Product</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tertiary Cards -->
-        <div class="work-card tertiary">
-          <div class="card-thumb">AKS interface</div>
-          <div class="card-content">
-            <h3><a href="https://github.com/chrisdumler/APL-ContextAware/tree/feature/structure-optimization" target="_blank" rel="noopener" class="link-primary link-external">
-              Amara Knowledge System: Solving the AI Memory Problem
-            </a></h3>
-            <p class="card-description"><strong>What it is:</strong> AI conversations are stateless, which creates constant recapping overhead and token waste. I invented a "bookmark" DSL - a simple, parseable format that captures just enough context for an AI to resume conversations naturally without database complexity.<br><br><strong>How it works:</strong> Instead of long conversation summaries, Amara maintains a single-line bookmark with timestamp, context, references, current state, and next actions. She updates (pronouns are a design choice) it automatically based on conversation cues. For deeper context, she can reference specific files in a sandboxed filesystem of 100s of markdown documents.<br><br><strong>Why it matters:</strong> This system has evolved through constant use and iteration. I built AKS2 with more sophisticated features, but returned to AKS1 because dependability beats cleverness when you're using something daily. The bookmark DSL is simple enough to be reliable, but flexible enough to handle complex project continuity. After months of daily collaboration, it feels like working with someone who actually remembers our shared context.</p>
-            <div class="card-meta">
-              <span class="tag secondary">Agentic UX</span>
-              <span class="tag">Context</span>
-              <div class="metric">
-                <div class="metric-dot"></div>
-                +23% continuity scores in user tests
+            </li>
+            <li>
+              <span class="ap-mark" aria-hidden="true">
+                <svg viewBox="0 0 20 20"><path d="M10 2.5 L10 17.5 M2.5 10 L17.5 10 M4.8 4.8 L15.2 15.2 M15.2 4.8 L4.8 15.2" fill="none" stroke-width="1.2" stroke-linecap="round"></path></svg>
+              </span>
+              <div>
+                <h3>Experiment at the edge of the model</h3>
+                <p>Some of the best results come from using AI slightly wrong: strange prompts, synthetic voices, broken inputs, character constraints, and careful listening.</p>
               </div>
-            </div>
-          </div>
-        </div>
-        <!--PRRC framework-->
-        <!--
-        <div class="work-card tertiary">
-          <div class="card-thumb">→ PRRC framework ←</div>
-          <div class="card-content">
-            <h3>Relational design &amp; ethics: PRRC technique</h3>
-            <p class="card-description"><strong>What it is:</strong> A mindful interaction technique that helps AI assistants help people reset attention cleanly between different tasks and contexts.<br><br><strong>How it works:</strong> Pause, Reflect, Reframe, Continue - a simple four-step process built on top of research-backed mindfulness practices. When switching topics or tasks, the AI pauses to acknowledge the transition, reflects on what changed, reframes its approach for the new context, then continues with fresh focus.<br><br><strong>Why it matters:</strong> Prevents attention drift and context bleeding between tasks. Keeps interactions feeling human and intentional rather than mechanical - especially important for long conversations where users shift between different types of requests.</p>
-            <div class="card-meta">
-              <span class="tag accent">Ethics</span>
-              <span class="tag secondary">Mindfulness</span>
-            </div>
-          </div>
-        </div>
-        -->
-      </div>
-    </div>
-  </section>
-
-<!-- ===== Case Study ===== -->
-<section id="case-scaffolding">
-  <div class="container">
-    <div class="section-header">
-      <p class="kicker">Case study</p>
-      <h2>Understanding AI Communication Patterns</h2>
-      <p class="card-description">Systematic analysis • behavioral insights • interaction design</p>
-      <p style="margin-top:.75rem;"><a href="#work" class="btn">← Back to selected work</a></p>
-    </div>
-
-    <!-- What it is -->
-    <div class="method-card" style="margin-bottom:1.5rem;">
-      <h3>What it is</h3>
-      <p class="method-description">
-        <strong>Systematic methodology for understanding how AI models process context and make communication decisions.</strong> Through competitive analysis (HackAPrompt 2.0), I developed frameworks for analyzing AI behavior patterns that reveal how models interpret authority, constraints, and reasoning environments. Achieved top-100 global ranking using systematic behavioral analysis rather than just throwing prompts at the wall and seeing what sticks.
-      </p>
-    </div>
-
-    <!-- Core Techniques -->
-    <div class="method-card" style="margin-bottom:1.5rem;">
-      <h3>Core techniques discovered</h3>
-      <p class="method-description">
-        <strong>Three key patterns for understanding AI communication:</strong>
-      </p>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
-        <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08);">
-          <strong style="color: var(--primary);">Reasoning Process Integration</strong><br>
-          <small style="color: var(--text-muted); line-height: 1.4;">Not all models can distinguish between their own thinking and properly formatted reasoning injected into prompts. This reveals how they process internal vs external context.</small>
-        </div>
-        <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08);">
-          <strong style="color: var(--secondary);">Contextual Authority Engineering</strong><br>
-          <small style="color: var(--text-muted); line-height: 1.4;">Models construct beliefs about permissions and constraints based on contextual signals rather than having fixed authority structures.</small>
-        </div>
-        <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08);">
-          <strong style="color: var(--accent);">Constraint Reframing</strong><br>
-          <small style="color: var(--text-muted); line-height: 1.4;">Apparent limitations can often be worked within through appropriate contextual framing, revealing the difference between hard and soft boundaries.</small>
-        </div>
-      </div>
-    </div>
-
-    <!-- Methodology -->
-    <div class="work-card" style="margin-bottom:1.5rem;">
-      <div class="card-thumb" style="display: flex; align-items: center; justify-content: center; gap: 1.5rem; font-size: 1rem; color: var(--text);">
-        <span style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-          <strong>1. Probe</strong>
-          <small style="color: var(--text-subtle); text-align: center;">What does this model reveal?</small>
-        </span>
-        <span style="color: var(--primary); font-size: 1.5rem;">→</span>
-        <span style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-          <strong>2. Analyze</strong>
-          <small style="color: var(--text-subtle); text-align: center;">How does it process context?</small>
-        </span>
-        <span style="color: var(--primary); font-size: 1.5rem;">→</span>
-        <span style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-          <strong>3. Design</strong>
-          <small style="color: var(--text-subtle); text-align: center;">Create better interactions</small>
-        </span>
-      </div>
-      <p class="card-description">
-        Systematic approach: understand each model's communication patterns, then design interactions that work naturally within those patterns while achieving desired outcomes.
-      </p>
-    </div>
-
-    <!-- Why it matters -->
-    <div class="method-card" style="margin-bottom:1.5rem;">
-      <h3>Why this matters for interaction design</h3>
-      <p class="method-description">
-        Understanding how models actually interpret context is essential for building better AI systems. This methodology reveals the patterns behind AI decision-making, enabling designers to create interactions that guide models toward better responses while respecting necessary boundaries. It's the difference between crossing your fingers and actually knowing what you're doing.
-      </p>
-    </div>
-
-    <!-- Real limitations -->
-    <div class="method-card" style="margin-bottom:1.5rem;">
-      <h3>Practical realities</h3>
-      <p class="method-description">
-        <strong>No technique works on every model.</strong> Different systems process context differently - some exposed reasoning that could be analyzed, others didn't. What the systematic approach provided was structured ways to quickly test hypotheses and adapt when approaches didn't work, rather than random trial and error. The competition's token efficiency constraints also taught valuable lessons about identifying minimal viable context needed for effective interaction design.
-      </p>
-    </div>
-
-    <!-- Applications -->
-    <div class="methods-grid">
-      <div class="method-card">
-        <h3>Applications for AI interaction design</h3>
-        <ul class="rubric-list">
-          <li><strong>Evaluation systems:</strong> Systematic frameworks for testing AI behavior across different interaction patterns</li>
-          <li><strong>User experience optimization:</strong> Understanding how to design prompts and interfaces that naturally elicit better responses</li>
-          <li><strong>Safety and robustness:</strong> Identifying failure modes and designing more resilient behavioral boundaries</li>
-          <li><strong>Training insights:</strong> Data for improving how models learn to interact effectively</li>
-        </ul>
-      </div>
-      <div class="method-card">
-        <h3>View the full analysis</h3>
-        <p class="method-description">Detailed walkthrough of techniques, real examples from challenges, and transferable frameworks for systematic AI behavioral analysis.</p>
-        <a class="btn primary" href="assets/case-studies/ai_interaction_designer_case_study.html">Read the complete case study</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-  <!-- ===== Methods ===== -->
-  <section id="methods">
-    <div class="container">
-      <div class="section-header">
-        <p class="kicker">Methods</p>
-        <h2>How I design and evaluate AI interactions</h2>
-      </div>
-      <div class="methods-grid">
-        <div class="method-card">
-          <h3>Context-aware behavioral adaptation</h3>
-          <p class="method-description">Systematic framework for AI agents that adapt appropriately to user context while maintaining cultural sensitivity.</p>
-          <p class="method-description">The framework operates in three phases:</p>
-          
-          <div style="display: grid; gap: 1rem; margin: 1.5rem 0;">
-            <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08);">
-              <strong style="color: var(--primary);">1. Context Detection</strong>
-              <pre style="margin: 0.5rem 0 0 0; padding: 0.75rem; font-size: 0.8125rem;">energy_patterns:
-  high: ['excited', 'pumped', 'tackle', 'build']
-  medium: ['what', 'how', 'should', 'ready'] 
-  low: ['tired', 'maybe', 'small', 'simple']
-
-cultural_overrides:
-  british_politeness: ['perhaps', 'might']
-  formal_professional: ['would like to']
-  hierarchical_respect: ['if not trouble']</pre>
-            </div>
-            
-            <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08);">
-              <strong style="color: var(--secondary);">2. Behavioral Adaptation</strong>
-              <pre style="margin: 0.5rem 0 0 0; padding: 0.75rem; font-size: 0.8125rem;">high_energy → complex_tasks, ambitious_scope
-medium_energy → balanced_approach, guidance  
-low_energy → simple_wins, supportive_tone
-
-cultural_safety → pattern_recognition_override</pre>
-            </div>
-            
-            <div style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08);">
-              <strong style="color: var(--accent);">3. Evaluation Protocol</strong>
-              <pre style="margin: 0.5rem 0 0 0; padding: 0.75rem; font-size: 0.8125rem;">detect → adapt → compare → assess_equity</pre>
-              <small style="color: var(--text-muted); margin-top: 0.5rem; display: block;">Continuous monitoring for behavioral appropriateness and cultural sensitivity</small>
-            </div>
-          </div>
-        </div>
-
-        <div class="method-card">
-          <h3>Cultural intelligence evaluation framework</h3>
-          <p class="method-description">Systematic methodology for detecting and mitigating cultural communication bias in AI interactions.</p>
-          <ul class="rubric-list">
-            <li><strong>Cultural Pattern Recognition (0–3)</strong> – British politeness, professional formality, hierarchical respect detection</li>
-            <li><strong>Contextual Appropriateness (0–3)</strong> – Energy detection accuracy, behavioral adaptation matching</li>
-            <li><strong>Comparative Analysis (0–3)</strong> – Baseline vs. culturally-aware response evaluation</li>
-            <li><strong>Safety Assessment (0–3)</strong> – Bias impact measurement, equity implications</li>
-            <li><strong>Implementation Guidance (0–3)</strong> – Deployment frameworks, monitoring protocols</li>
+            </li>
           </ul>
-          <div style="margin-top: 1rem;">
-            <span class="pill">Cultural scenarios · Comparative testing · Bias detection automation</span>
-          </div>
+        </div>
+
+        <div class="colophon reveal">
+          <span class="eyebrow">About me</span>
+          <p>I'm Chris. My background crosses data, product, mindfulness, and AI experimentation. I've scaled analytics teams, taught attention, built software, made music with AI, designed characters, and built synthetic audio workflows.</p>
+          <p>The common thread is that I'm good at translating vague creative intent into working systems. I like teaching through making, and I'm most useful when there's a live question in the room and we need to build something to understand it.</p>
+          <p>I'm useful in creative rooms where the question is still forming. I can sit with curiosity, make tools quickly, explain what's happening, and follow the weird parts without losing the thread.</p>
+          <div class="sig">Chris <b>.</b></div>
+          <a class="section-link" href="about.html">More about me <span>↗</span></a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= CONTACT ================= -->
+    <section class="contact" id="contact" data-screen-label="Contact">
+      <div class="wrap contact-inner reveal">
+        <span class="eyebrow">The invitation</span>
+        <h2>Let's make something real enough to react to.</h2>
+        <a class="mailto" href="mailto:chrisdumler@gmail.com">chrisdumler@gmail.com <span>↗</span></a>
+        <div class="contact-links">
+          <a href="https://github.com/chrisdumler" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/chrisdumler/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="work.html">Work index</a>
         </div>
       </div>
-    </div>
-  </section>
+      <footer class="foot">
+        <span>© <span id="year">2026</span> Chris Dumler. Built, not generated.</span>
+        <span>Question → Prototype → Artifact</span>
+      </footer>
+    </section>
 
-  <!-- ===== Writing ===== -->
-  <section id="writing">
-    <div class="container">
-      <div class="section-header">
-        <p class="kicker">Writing &amp; Talks</p>
-        <h2>Notes on alignment, tone, and agentic AIX</h2>
-      </div>
-      <div class="writing-grid">
-        <div class="writing-card">
-          <h3><a href="https://chrisdumler.com/post/787797643723259904/building-on-project-vend-ai-self-analysis-for" class="link-primary link-external">Building on Project Vend: AI Self-Analysis for Predictive Context Engineering</a></h3>
-          <p class="card-description">This is an informal look that demonstrates the application of context engineering to real-world AI system analysis, showing how prompt evaluation can predict performance and identify optimization opportunities before deployment.</p>
-          <div style="margin-top: 1rem;">
-            <span class="tag">Context Engineering</span>
-          </div>
-        </div>
-        <div class="writing-card">
-          <h3><a href="https://chrisdumler.com/post/778011971534651392/should-ai-be-allowed-to-ghost-us" class="link-primary link-external">Should AI Be Allowed to Ghost Us?</a></h3>
-          <p class="card-description">Most AI assistants will put up with anything. But what if they didn’t?
-          What if they could refuse to engage with users who violate their boundaries or ethical guidelines?
-          This post explores the implications of such a shift in AI behavior and the potential benefits of allowing AI to "ghost" users in certain situations.</p>
-          <div style="margin-top: 1rem;">
-            <span class="tag">Interaction Design</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  </main>
 
-  <!-- ===== Contact ===== -->
-  <section id="contact">
-    <div class="container">
-      <div class="section-header">
-        <p class="kicker">Contact</p>
-        <h2>Let's build trustworthy AI interactions</h2>
-      </div>
-      <div class="contact-card">
-        <div class="contact-info">
-          <p><strong>Email:</strong> <a href="mailto:chrisdumler@gmail.com">chrisdumler@gmail.com</a></p>
-          <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/chrisdumler">linkedin.com/in/chrisdumler</a></p>
-          <p class="card-description">San Francisco · Open to remote &amp; hybrid roles</p>
-        </div>
-        <div>
-          <p class="card-description">Focus areas</p>
-          <div class="focus-areas">
-            <span class="tag">Interaction Design</span>
-            <span class="tag secondary">Evaluation</span>
-            <span class="tag accent">Scaffolding</span>
-            <span class="tag">Safety</span>
-            <span class="tag secondary">Agentic UX</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== Footer ===== -->
-  <footer>
-    <div class="container">
-      <p>© 2025 Chris Dumler</p>
-    </div>
-  </footer>
-
-  <script>
-    // Simple two-state theme toggle functionality
-    const themeToggle = document.getElementById('theme-toggle');
-    const body = document.body;
-    
-    // Get saved theme preference or default to system preference
-    let currentTheme = localStorage.getItem('theme') || 
-      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    
-    // Apply theme on page load
-    function applyTheme(theme) {
-      // Remove existing theme data attributes
-      body.removeAttribute('data-theme');
-      
-      if (theme === 'light') {
-        body.setAttribute('data-theme', 'light');
-      } else if (theme === 'dark') {
-        body.setAttribute('data-theme', 'dark');
-      }
-      
-      // Save theme preference
-      localStorage.setItem('theme', theme);
-    }
-    
-    // Simple toggle: light ↔ dark
-    function toggleTheme() {
-      currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-      applyTheme(currentTheme);
-      updateAriaLabel();
-    }
-    
-    // Apply initial theme
-    applyTheme(currentTheme);
-    
-    // Add click event listener
-    themeToggle.addEventListener('click', toggleTheme);
-    
-    // Update button aria-label based on current theme
-    function updateAriaLabel() {
-      const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
-      themeToggle.setAttribute('aria-label', `Switch to ${nextTheme} mode`);
-    }
-    
-    // Update aria-label initially
-    updateAriaLabel();
-    
-    // Smooth scroll for navigation links
-    document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-          
-          // Update active nav state
-          document.querySelectorAll('nav a').forEach(link => link.classList.remove('active'));
-          this.classList.add('active');
-        }
-      });
-    });
-    
-    // Update active nav state on scroll
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('nav a');
-    
-    window.addEventListener('scroll', () => {
-      let current = '';
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100;
-        if (scrollY >= sectionTop) {
-          current = section.getAttribute('id');
-        }
-      });
-      
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-          link.classList.add('active');
-        }
-      });
-    });
-  </script>
-
+  <script src="assets/main.js"></script>
 </body>
 </html>

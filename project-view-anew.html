@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>View Anew · Chris Dumler</title>
+<meta name="description" content="View Anew: a native macOS reading window for the documents your agents produce. Renders markdown and the embedded markup in it, styled by CSS templates you can swap and write yourself." />
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="brand" href="index.html">Chris Dumler<b>.</b></a>
+    <nav class="topnav">
+      <a href="index.html">Home</a>
+      <a href="work.html">← Work</a>
+      <a href="about.html">About</a>
+      <a href="index.html#contact"><span class="dot">●</span> Contact</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">☀</button>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <section class="proj-hero wrap" data-screen-label="View Anew hero">
+      <span class="kicker">Product · macOS app · 2026</span>
+      <h1>View Anew</h1>
+      <p class="one-liner">A reading window for the documents <span class="accent">your agents produce.</span></p>
+    </section>
+
+    <div class="wrap">
+      <div class="proj-shot reveal" data-diagram>
+        <svg viewBox="0 0 640 360" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A sketch of View Anew: a source document mixing markdown, HTML, and code is opened in a focused reading window, styled by swappable templates.">
+          <defs>
+            <marker id="vah" markerWidth="9" markerHeight="9" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="dg-tip" /></marker>
+          </defs>
+
+          <ellipse class="dg-wash blue" cx="324" cy="180" rx="124" ry="104" />
+          <ellipse class="dg-wash rose" cx="92" cy="170" rx="52" ry="56" />
+
+          <text class="dg-anno k" x="246" y="40">OPEN IT, READ IT, CLOSE IT</text>
+
+          <rect class="dg-box" x="30" y="120" width="118" height="116" rx="2.5" />
+          <text class="dg-label" x="89" y="146" text-anchor="middle">SOURCE</text>
+          <text class="dg-anno bul" x="44" y="172">· markdown</text>
+          <text class="dg-anno bul" x="44" y="194">· html</text>
+          <text class="dg-anno bul" x="44" y="216">· code</text>
+
+          <line class="dg-wire" x1="148" y1="178" x2="196" y2="178" marker-end="url(#vah)" />
+
+          <rect class="dg-box" x="200" y="96" width="250" height="168" rx="2.5" />
+          <rect class="dg-box" x="200" y="96" width="250" height="26" rx="2.5" />
+          <circle cx="216" cy="109" r="3" fill="var(--ink-soft)" />
+          <circle cx="228" cy="109" r="3" fill="var(--ink-soft)" />
+          <circle cx="240" cy="109" r="3" fill="var(--ink-soft)" />
+          <text class="dg-anno" x="332" y="113" text-anchor="middle">View Anew</text>
+          <line class="dg-wire" x1="220" y1="148" x2="430" y2="148" />
+          <line class="dg-wire" x1="220" y1="168" x2="398" y2="168" />
+          <line class="dg-wire" x1="220" y1="188" x2="430" y2="188" />
+          <line class="dg-wire" x1="220" y1="208" x2="376" y2="208" />
+          <line class="dg-wire" x1="220" y1="228" x2="412" y2="228" />
+
+          <rect class="dg-box" x="470" y="152" width="30" height="38" rx="2.5" />
+          <rect class="dg-box" x="506" y="152" width="30" height="38" rx="2.5" />
+          <rect class="dg-box" x="542" y="152" width="30" height="38" rx="2.5" />
+          <text class="dg-anno k" x="470" y="142">TEMPLATES</text>
+          <line class="dg-wire" x1="498" y1="152" x2="452" y2="162" marker-end="url(#vah)" />
+          <text class="dg-anno" x="506" y="216" text-anchor="middle">your own look</text>
+        </svg>
+      </div>
+    </div>
+
+    <section class="wrap">
+      <div class="proj-body-grid">
+        <aside class="proj-facts reveal">
+          <div class="pf-row"><span class="k">Type</span><span class="v">Native macOS app, shipped</span></div>
+          <div class="pf-row"><span class="k">Role</span><span class="v">Design &amp; build, end to end</span></div>
+          <div class="pf-row"><span class="k">Stack</span><span class="v mono">Tauri 2<br />system webview<br />signed + notarized</span></div>
+          <div class="pf-row"><span class="k">Defining feature</span><span class="v">Swappable CSS templates: read everything in your own look</span></div>
+          <div class="pf-row"><span class="k">Optional</span><span class="v">LLM-assisted styling (Anthropic / OpenAI)</span></div>
+          <div class="pf-row"><span class="k">Status</span><span class="v">Shipped, downloadable .dmg</span></div>
+        </aside>
+
+        <div class="proj-prose reveal">
+          <h2>The problem</h2>
+          <p>Sometimes you just want to read a markdown file. Not edit it, not file it in a vault, not preview it in the corner of an IDE. Read it. There is no good place to do that. Obsidian wants the file in your graph. VSCode's preview is fine, but the rest of VSCode is right there pulling focus. Browsers do not render markdown. Quick Look mangles code blocks.</p>
+          <p>And the files themselves are not pure markdown anymore. LLM outputs mix prose with embedded HTML, XML, JSON, and code: system and user tags in a prompt library, detail blocks in a spec, raw SVG in a diagram. A reader that strips or fumbles those is not reading the document. It is reading a sanitized version of it.</p>
+
+          <h2>What I built</h2>
+          <p>A small native macOS app that does one thing well: open the file, read the file, close the window.</p>
+          <ul>
+            <li><strong>Honest rendering.</strong> Full prose layout and syntax-highlighted code, with the embedded markup kept visible and legible in place instead of stripped out.</li>
+            <li><strong>Reading and source views.</strong> One shortcut toggles between the rendered output and the raw text, for any text file.</li>
+            <li><strong>Visual care in the reader.</strong> The rendered view is styled by CSS templates you can swap, write, and share. Describe the look you want to a model, paste the CSS, and read every document in your own look rather than a fixed theme.</li>
+            <li><strong>Optional model assist.</strong> Connect an Anthropic or OpenAI-compatible key (stored in the macOS Keychain) and iterate on templates by describing changes in plain English. Entirely optional. The app works fully without it.</li>
+            <li><strong>Real and shippable.</strong> Tauri 2 on the system webview, so the footprint is tiny, with a native menu bar, keyboard shortcuts, auto-update, signed and notarized so Gatekeeper lets it run cleanly.</li>
+          </ul>
+
+          <h2>What it made possible</h2>
+          <p>A focused place to actually read what agents write, the way it was written, in a visual treatment you control. The next step is sandboxed rendering of the HTML artifacts agents are starting to produce instead of markdown, specs and explainers and throwaway editors, which deserve a focused reader too, not a browser tab buried among twenty others.</p>
+
+          <h2>Why it matters</h2>
+          <p>As more of our reading becomes machine-generated, where and how we read it stops being an afterthought. View Anew is a bet that the care people put into a terminal prompt or an editor theme belongs in the reader as well, and it is proof that I will ship a finished, notarized product to make that point rather than just describe it.</p>
+        </div>
+      </div>
+
+      <nav class="proj-nav">
+        <a class="prev" href="work.html"><span class="lab">Index</span>← all work</a>
+        <a class="next" href="project-claude-debrief.html"><span class="lab">Next</span>claude-debrief →</a>
+      </nav>
+    </div>
+
+    <section class="contact" id="contact" style="border-top:1px solid var(--line);" data-screen-label="Contact">
+      <div class="wrap contact-inner reveal">
+        <span class="eyebrow">Want the deeper version?</span>
+        <h2>Let's make something <span class="accent">real enough to react to.</span></h2>
+        <a class="mailto" href="mailto:chrisdumler@gmail.com">chrisdumler@gmail.com <span>↗</span></a>
+        <div class="contact-links">
+          <a href="work.html">More work</a>
+          <a href="about.html">About</a>
+          <a href="https://github.com/chrisdumler" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/chrisdumler/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+      <footer class="foot">
+        <span>© <span id="year">2026</span> Chris Dumler. Built, not generated.</span>
+        <span>Question → Prototype → Artifact</span>
+      </footer>
+    </section>
+
+  </main>
+
+  <script src="assets/main.js"></script>
+</body>
+</html>

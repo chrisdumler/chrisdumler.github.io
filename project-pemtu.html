@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pemtu · Chris Dumler</title>
+<meta name="description" content="Pemtu: a designed AI product manager. A thinking partner for the messy front end of an idea, and the coordinator who turns decisions into structured work for AI coding agents." />
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="brand" href="index.html">Chris Dumler<b>.</b></a>
+    <nav class="topnav">
+      <a href="index.html">Home</a>
+      <a href="work.html">← Work</a>
+      <a href="about.html">About</a>
+      <a href="index.html#contact"><span class="dot">●</span> Contact</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">☀</button>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <section class="proj-hero wrap" data-screen-label="Pemtu hero">
+      <span class="kicker">AI collaborator · product + agent workflow · 2025</span>
+      <h1>Pemtu</h1>
+      <p class="one-liner">An AI product manager: a thinking partner up front, <span class="accent">an agent wrangler once the plan is real.</span></p>
+    </section>
+
+    <div class="wrap">
+      <div class="proj-shot reveal" data-diagram>
+        <svg viewBox="0 0 640 360" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A sketch of Pemtu: a central hub between the human and AI coding agents, switching between explore and execute modes, reading the project's methodology.">
+          <defs>
+            <marker id="pmh" markerWidth="9" markerHeight="9" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="dg-tip" /></marker>
+          </defs>
+
+          <ellipse class="dg-wash blue" cx="320" cy="180" rx="104" ry="92" />
+          <ellipse class="dg-wash rose" cx="470" cy="150" rx="54" ry="52" />
+
+          <text class="dg-anno k" x="196" y="42">A THINKING PARTNER, AND AN AGENT WRANGLER</text>
+
+          <rect class="dg-box" x="28" y="150" width="120" height="56" rx="2.5" />
+          <text class="dg-label" x="88" y="176" text-anchor="middle">HUMAN</text>
+          <text class="dg-anno" x="88" y="194" text-anchor="middle">ideation</text>
+
+          <rect class="dg-box" x="250" y="128" width="140" height="100" rx="2.5" />
+          <text class="dg-label" x="320" y="152" text-anchor="middle">PEMTU</text>
+          <rect class="dg-box" x="266" y="164" width="50" height="22" rx="2.5" />
+          <text class="dg-anno" x="291" y="179" text-anchor="middle">explore</text>
+          <rect class="dg-box" x="324" y="164" width="50" height="22" rx="2.5" />
+          <text class="dg-anno" x="349" y="179" text-anchor="middle">execute</text>
+          <text class="dg-anno" x="320" y="214" text-anchor="middle">reads methodology.md</text>
+
+          <rect class="dg-box" x="492" y="150" width="120" height="56" rx="2.5" />
+          <text class="dg-label" x="552" y="174" text-anchor="middle">AI CODING</text>
+          <text class="dg-label" x="552" y="192" text-anchor="middle">AGENTS</text>
+
+          <line class="dg-wire" x1="148" y1="170" x2="246" y2="170" marker-end="url(#pmh)" />
+          <line class="dg-wire" x1="246" y1="188" x2="150" y2="188" marker-end="url(#pmh)" />
+          <line class="dg-wire" x1="390" y1="178" x2="488" y2="178" marker-end="url(#pmh)" />
+        </svg>
+      </div>
+    </div>
+
+    <section class="wrap">
+      <div class="proj-body-grid">
+        <aside class="proj-facts reveal">
+          <div class="pf-row"><span class="k">Type</span><span class="v">Designed AI collaborator (persona)</span></div>
+          <div class="pf-row"><span class="k">Role</span><span class="v">Character design &amp; system instructions, end to end</span></div>
+          <div class="pf-row"><span class="k">Function</span><span class="v">Product thinking partner + AI-agent coordinator</span></div>
+          <div class="pf-row"><span class="k">Method</span><span class="v">Reads a project's <span class="mono">methodology.md</span>; defaults toward SLC</span></div>
+          <div class="pf-row"><span class="k">Voice</span><span class="v">Designed: warm, forward, wide dynamic range</span></div>
+          <div class="pf-row"><span class="k">Status</span><span class="v">In use, v2.0.1</span></div>
+        </aside>
+
+        <div class="proj-prose reveal">
+          <h2>The problem</h2>
+          <p>The interesting work happens at two ends of a build, and they want opposite things from a collaborator. The front end is messy ideation: half-formed ideas, rapid nonlinear connections, "what if users actually want this instead." The back end is coordinating AI coding agents, which need the reverse: clear, structured, decisive work requests with real acceptance criteria. A generic assistant is mediocre at both, and bouncing between two separate tools breaks the thread. I wanted one collaborator who could hold both modes and the switch between them.</p>
+
+          <h2>What I built</h2>
+          <p>Pemtu is a designed product-manager persona, specified the way you would spec an interface rather than written as a personality blurb.</p>
+          <ul>
+            <li><strong>Two registers, one character.</strong> With me, Pemtu is conversational, user-obsessed, and curious rather than prescriptive, built to match a fast, connection-making way of thinking. With coding agents, Pemtu turns clear, structured, and decisive, writing work requests against methodology templates.</li>
+            <li><strong>A methodology config.</strong> Pemtu checks a project's <span class="mono">methodology.md</span> to decide how to run, defaulting toward SLC (Simple, Lovable, Complete), the same framework behind BrewProof.</li>
+            <li><strong>Defined authority.</strong> Explicit rules for when to push back (skipped quality gates, mid-sprint scope creep, vague success criteria) and when to defer (strategy, timeline, priorities). Push on process and quality, follow the human's lead on direction.</li>
+            <li><strong>Context-switch triggers.</strong> Pemtu reads the human's language and energy to sense when brainstorming has become planning, instead of forcing structure too early.</li>
+            <li><strong>Failure-pattern handling.</strong> What to do when the human goes quiet, when "just one more thing" appears, when requirements are fuzzy, when an agent gets stuck.</li>
+            <li><strong>A designed voice.</strong> Late twenties, warm core, crisp consonants, a wide live dynamic range that brightens when engaged and goes flat when not. Never performs politeness.</li>
+          </ul>
+
+          <h2>What it made possible</h2>
+          <p>One collaborator that spans both halves of agent-assisted building, the human conversation and the agent coordination, and holds the context switch between them so I do not have to run two separate relationships to ship one product.</p>
+
+          <h2>Why it matters</h2>
+          <p>Pemtu is character design as function. The tone and the authority rules are not flavor, they are engineered to produce a specific working relationship: a partner with a spine that pushes back on the right things and gets out of the way on the rest. It is the place where my character work, my product thinking, and my agent workflows meet.</p>
+        </div>
+      </div>
+
+      <nav class="proj-nav">
+        <a class="prev" href="work.html"><span class="lab">Index</span>← all work</a>
+        <a class="next" href="project-ivep.html"><span class="lab">Next</span>IVEP →</a>
+      </nav>
+    </div>
+
+    <section class="contact" id="contact" style="border-top:1px solid var(--line);" data-screen-label="Contact">
+      <div class="wrap contact-inner reveal">
+        <span class="eyebrow">Want the deeper version?</span>
+        <h2>Let's make something <span class="accent">real enough to react to.</span></h2>
+        <a class="mailto" href="mailto:chrisdumler@gmail.com">chrisdumler@gmail.com <span>↗</span></a>
+        <div class="contact-links">
+          <a href="work.html">More work</a>
+          <a href="about.html">About</a>
+          <a href="https://github.com/chrisdumler" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/chrisdumler/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+      <footer class="foot">
+        <span>© <span id="year">2026</span> Chris Dumler. Built, not generated.</span>
+        <span>Question → Prototype → Artifact</span>
+      </footer>
+    </section>
+
+  </main>
+
+  <script src="assets/main.js"></script>
+</body>
+</html>

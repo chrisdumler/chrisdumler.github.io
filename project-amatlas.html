@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AMATLAS: Audio Model Atlas · Chris Dumler</title>
+<meta name="description" content="AMATLAS (Audio Model Atlas): a queryable knowledge base of audio and voice models (TTS, voice cloning, voice design, voice conversion), built so downstream projects can cite diligence instead of rediscovering it." />
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="brand" href="index.html">Chris Dumler<b>.</b></a>
+    <nav class="topnav">
+      <a href="index.html">Home</a>
+      <a href="work.html">← Work</a>
+      <a href="about.html">About</a>
+      <a href="index.html#contact"><span class="dot">●</span> Contact</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">☀</button>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <section class="proj-hero wrap" data-screen-label="AMATLAS hero">
+      <span class="kicker">Research system · audio · 2025–26</span>
+      <h1>AMATLAS</h1>
+      <p class="one-liner">A queryable knowledge base for audio and voice models, built so the same diligence stops getting <span class="accent">rediscovered the hard way.</span></p>
+    </section>
+
+    <div class="wrap">
+      <div class="proj-shot reveal" data-diagram>
+        <svg viewBox="0 0 640 360" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A sketch of AMATLAS: many audio model nodes, some linked by lineage, feed into one structured atlas entry (identity, license, lineage, maintenance) that consumers cite instead of restating.">
+          <defs>
+            <marker id="amh" markerWidth="9" markerHeight="9" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="dg-tip" /></marker>
+          </defs>
+
+          <ellipse class="dg-wash blue" cx="320" cy="190" rx="110" ry="92" />
+          <ellipse class="dg-wash rose" cx="486" cy="150" rx="54" ry="50" />
+
+          <text class="dg-anno k" x="206" y="40">ONE STRUCTURED ENTRY PER MODEL</text>
+
+          <circle class="dg-box" cx="78" cy="98" r="13" />
+          <circle class="dg-box" cx="62" cy="156" r="13" />
+          <circle class="dg-box" cx="92" cy="212" r="13" />
+          <circle class="dg-box" cx="70" cy="268" r="13" />
+          <circle class="dg-box" cx="146" cy="134" r="11" />
+          <line class="dg-wire dash" x1="78" y1="111" x2="62" y2="143" />
+          <line class="dg-wire dash" x1="62" y1="169" x2="92" y2="199" />
+          <text class="dg-anno" x="46" y="302">audio models · lineage</text>
+
+          <line class="dg-wire" x1="160" y1="140" x2="236" y2="168" marker-end="url(#amh)" />
+          <line class="dg-wire" x1="112" y1="214" x2="236" y2="206" marker-end="url(#amh)" />
+
+          <rect class="dg-box" x="240" y="120" width="172" height="132" rx="2.5" />
+          <text class="dg-label" x="326" y="144" text-anchor="middle">ATLAS ENTRY</text>
+          <line class="dg-wire" x1="256" y1="154" x2="396" y2="154" />
+          <text class="dg-anno bul" x="262" y="178">· identity</text>
+          <text class="dg-anno bul" x="262" y="200">· license</text>
+          <text class="dg-anno bul" x="262" y="222">· lineage</text>
+          <text class="dg-anno bul" x="262" y="244">· maintenance</text>
+
+          <line class="dg-wire" x1="412" y1="186" x2="474" y2="186" marker-end="url(#amh)" />
+          <text class="dg-anno k" x="478" y="180">CONSUMERS</text>
+          <text class="dg-anno" x="478" y="196">cite, don't restate</text>
+        </svg>
+      </div>
+    </div>
+
+    <section class="wrap">
+      <div class="proj-body-grid">
+        <aside class="proj-facts reveal">
+          <div class="pf-row"><span class="k">Type</span><span class="v">Research system · structured catalog</span></div>
+          <div class="pf-row"><span class="k">Role</span><span class="v">Design &amp; research, end to end</span></div>
+          <div class="pf-row"><span class="k">Covers</span><span class="v mono">TTS<br />voice cloning<br />voice design<br />voice conversion</span></div>
+          <div class="pf-row"><span class="k">Scale</span><span class="v">79 model entries, 60 verified</span></div>
+          <div class="pf-row"><span class="k">First consumer</span><span class="v">A synthetic audio research project</span></div>
+          <div class="pf-row"><span class="k">Status</span><span class="v">Active, private repo</span></div>
+        </aside>
+
+        <div class="proj-prose reveal">
+          <h2>The problem</h2>
+          <p>Audio and voice projects keep hitting the same questions. Who actually owns this model? What does the license permit on the audio it generates, not just on the weights? Is the project still maintained, or did the last release ship a year ago? What is the free tier in practice versus what the marketing page implies? Which other models quietly share the same engine?</p>
+          <p>Answer those questions inside each project and the knowledge fragments. It decays as models change, and it gets rediscovered mid-integration, which is the worst time to find out a license forbids the thing you just built.</p>
+
+          <h2>What I built</h2>
+          <p>AMATLAS centralizes that diligence into one structured entry per model. Each entry pairs a YAML contract with a narrative body, so it is both machine-readable and honest about the parts that resist a checkbox.</p>
+          <ul>
+            <li><strong>Structured fields:</strong> identity and parent company, engine lineage, architecture family, access methods with per-method licensing, voice surface, watermarking and provenance, languages, and a maintenance signal that says whether the model is still alive.</li>
+            <li><strong>A lineage graph:</strong> edges between entries (derives-from, sibling-of, successor-to) so you can see which models are really the same family wearing different names.</li>
+            <li><strong>An entry lifecycle:</strong> every entry moves through draft, verified, and consumer-vetted, with an agentic verifier that re-checks the facts instead of trusting them to stay true.</li>
+            <li><strong>A decision log:</strong> the catalog documents its own rules, so the schema can evolve without quietly breaking the projects that depend on it.</li>
+          </ul>
+
+          <h2>What it made possible</h2>
+          <p>Downstream projects cite atlas entries instead of restating the research. The diligence lives in one place, stays current, and gets pulled in rather than redone. Its first consumer is a synthetic audio research project that needed a clear, trustworthy map of which models could actually be used and how.</p>
+
+          <h2>Why it matters</h2>
+          <p>This is knowledge treated as infrastructure. The audio model space moves fast and rewards whoever can keep the facts straight, and AMATLAS is a bet that the way to do that is to build the reference, verify it, and let everything else read from it. It is the kind of work I reach for when a domain is messy and the cost of getting it wrong shows up later, somewhere expensive.</p>
+        </div>
+      </div>
+
+      <nav class="proj-nav">
+        <a class="prev" href="work.html"><span class="lab">Index</span>← all work</a>
+        <a class="next" href="index.html#work"><span class="lab">Next</span>Pemtu →</a>
+      </nav>
+    </div>
+
+    <section class="contact" id="contact" style="border-top:1px solid var(--line);" data-screen-label="Contact">
+      <div class="wrap contact-inner reveal">
+        <span class="eyebrow">Want the deeper version?</span>
+        <h2>Let's make something <span class="accent">real enough to react to.</span></h2>
+        <a class="mailto" href="mailto:chrisdumler@gmail.com">chrisdumler@gmail.com <span>↗</span></a>
+        <div class="contact-links">
+          <a href="work.html">More work</a>
+          <a href="about.html">About</a>
+          <a href="https://github.com/chrisdumler" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/chrisdumler/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+      <footer class="foot">
+        <span>© <span id="year">2026</span> Chris Dumler. Built, not generated.</span>
+        <span>Question → Prototype → Artifact</span>
+      </footer>
+    </section>
+
+  </main>
+
+  <script src="assets/main.js"></script>
+</body>
+</html>

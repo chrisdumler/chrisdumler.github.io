@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CoLa: the Consent Layer · Chris Dumler</title>
+<meta name="description" content="CoLa (Consent Layer): a consent, boundary, and negotiation layer that governs what agents may do on behalf of their users, above transport protocols like A2A, ANP, and NLIP." />
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="brand" href="index.html">Chris Dumler<b>.</b></a>
+    <nav class="topnav">
+      <a href="index.html">Home</a>
+      <a href="work.html">← Work</a>
+      <a href="about.html">About</a>
+      <a href="index.html#contact"><span class="dot">●</span> Contact</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">☀</button>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <section class="proj-hero wrap" data-screen-label="CoLa hero">
+      <span class="kicker">Research · governance · 2025–26</span>
+      <h1>CoLa</h1>
+      <p class="one-liner">The consent, boundary, and negotiation layer for <span class="accent">cross-user agent interaction.</span></p>
+    </section>
+
+    <div class="wrap">
+      <div class="proj-shot reveal" data-diagram>
+        <svg viewBox="0 0 640 360" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A sketch of CoLa: a consent, boundary, and negotiation layer resting on top of agent transport protocols, with two agents negotiating across it.">
+          <defs>
+            <marker id="coh" markerWidth="9" markerHeight="9" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="dg-tip" /></marker>
+          </defs>
+
+          <ellipse class="dg-wash blue" cx="320" cy="156" rx="150" ry="80" />
+          <ellipse class="dg-wash rose" cx="320" cy="256" rx="120" ry="54" />
+
+          <text class="dg-anno k" x="220" y="34">GOVERNANCE ABOVE TRANSPORT</text>
+
+          <circle class="dg-box" cx="150" cy="90" r="18" />
+          <text class="dg-anno" x="150" y="72" text-anchor="middle">agent</text>
+          <circle class="dg-box" cx="490" cy="90" r="18" />
+          <text class="dg-anno" x="490" y="72" text-anchor="middle">agent</text>
+          <path class="dg-wire dash" d="M 170 84 C 260 54, 380 54, 470 84" marker-end="url(#coh)" />
+          <text class="dg-feedlabel" x="320" y="56" text-anchor="middle">negotiate</text>
+
+          <line class="dg-wire" x1="150" y1="108" x2="150" y2="150" marker-end="url(#coh)" />
+          <line class="dg-wire" x1="490" y1="108" x2="490" y2="150" marker-end="url(#coh)" />
+
+          <rect class="dg-box" x="70" y="150" width="500" height="62" rx="2.5" />
+          <text class="dg-label" x="320" y="176" text-anchor="middle">CoLa · CONSENT LAYER</text>
+          <text class="dg-anno" x="320" y="196" text-anchor="middle">consent · boundaries · negotiation</text>
+
+          <rect class="dg-box" x="70" y="236" width="500" height="56" rx="2.5" />
+          <text class="dg-label" x="320" y="262" text-anchor="middle">TRANSPORT</text>
+          <text class="dg-anno" x="320" y="280" text-anchor="middle">A2A · ANP · NLIP</text>
+        </svg>
+      </div>
+    </div>
+
+    <section class="wrap">
+      <div class="proj-body-grid">
+        <aside class="proj-facts reveal">
+          <div class="pf-row"><span class="k">Type</span><span class="v">Research project</span></div>
+          <div class="pf-row"><span class="k">Role</span><span class="v">Design &amp; research, end to end</span></div>
+          <div class="pf-row"><span class="k">Focus</span><span class="v">Consent · boundaries · negotiation</span></div>
+          <div class="pf-row"><span class="k">Sits above</span><span class="v mono">Google A2A<br />ANP<br />NLIP</span></div>
+          <div class="pf-row"><span class="k">Status</span><span class="v">Active exploration</span></div>
+        </aside>
+
+        <div class="proj-prose reveal">
+          <h2>The problem</h2>
+          <p>Agents are starting to talk to other agents. Booking, negotiating, fetching, and acting on behalf of the people who run them. The transport protocols for that conversation are arriving fast: <strong>Google's A2A, ANP, NLIP.</strong> They define how agents <em>can</em> talk.</p>
+          <p>What they don't define is what an agent is <strong>allowed</strong> to do. When my agent meets yours, who consented to what? Where are the boundaries? How do two agents negotiate a request that neither user explicitly anticipated? Transport without governance is just a faster way to do something nobody agreed to.</p>
+
+          <h2>The approach</h2>
+          <p>CoLa is the layer that sits above transport and answers those questions. It treats consent not as a checkbox but as a <strong>living, negotiable contract</strong> between agents, legible to both the humans behind them and the systems enforcing it.</p>
+          <ul>
+            <li><strong>Consent:</strong> explicit, scoped grants for what an agent may do on a user's behalf, revocable and inspectable.</li>
+            <li><strong>Boundaries:</strong> the hard edges a request can't cross, independent of how persuasive the other agent is.</li>
+            <li><strong>Negotiation:</strong> a structured way for two agents to find an outcome inside both users' boundaries, or fail safely when there isn't one.</li>
+          </ul>
+
+          <h2>Why it matters</h2>
+          <p>This is the seam I find most interesting: the gap between a system that <strong>asks</strong> and one that <strong>assumes</strong>. Get the governance layer right and agent-to-agent interaction can be genuinely useful without being quietly coercive. Get it wrong and we've automated the erosion of consent at protocol speed.</p>
+          <p>CoLa is a bet that the trustworthy version is designable, and a working argument for what it should look like.</p>
+        </div>
+      </div>
+
+      <nav class="proj-nav">
+        <a class="prev" href="work.html"><span class="lab">Index</span>← all work</a>
+        <a class="next" href="index.html#work"><span class="lab">Next</span>claude-debrief →</a>
+      </nav>
+    </div>
+
+    <section class="contact" id="contact" style="border-top:1px solid var(--line);" data-screen-label="Contact">
+      <div class="wrap contact-inner reveal">
+        <span class="eyebrow">Want the deeper version?</span>
+        <h2>Let's make something <span class="accent">real enough to react to.</span></h2>
+        <a class="mailto" href="mailto:chrisdumler@gmail.com">chrisdumler@gmail.com <span>↗</span></a>
+        <div class="contact-links">
+          <a href="work.html">More work</a>
+          <a href="about.html">About</a>
+          <a href="https://github.com/chrisdumler" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/chrisdumler/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+      <footer class="foot">
+        <span>© <span id="year">2026</span> Chris Dumler. Built, not generated.</span>
+        <span>Question → Prototype → Artifact</span>
+      </footer>
+    </section>
+
+  </main>
+
+  <script src="assets/main.js"></script>
+</body>
+</html>

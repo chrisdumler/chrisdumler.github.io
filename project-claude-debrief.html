@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>claude-debrief · Chris Dumler</title>
+<meta name="description" content="claude-debrief: a structured process for rebuilding the owner's mental model of software built mostly through AI-agent sessions. Triggered by need, it triangulates across the human, the code, and the in-process record." />
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="brand" href="index.html">Chris Dumler<b>.</b></a>
+    <nav class="topnav">
+      <a href="index.html">Home</a>
+      <a href="work.html">← Work</a>
+      <a href="about.html">About</a>
+      <a href="index.html#contact"><span class="dot">●</span> Contact</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">☀</button>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <section class="proj-hero wrap" data-screen-label="claude-debrief hero">
+      <span class="kicker">Process framework · agent workflows · 2026</span>
+      <h1>claude-debrief</h1>
+      <p class="one-liner">A way to rebuild your understanding of a system <span class="accent">your agents built and you only directed.</span></p>
+    </section>
+
+    <div class="wrap">
+      <div class="proj-shot reveal" data-diagram>
+        <svg viewBox="0 0 640 360" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A sketch of the claude-debrief process: three knowledge sources (the human, the shipped code, and the in-process record), each carrying its own bias, feed a triangulating debrief that rebuilds the owner's mental model. The result loops back as a living substrate updated at each forcing function.">
+          <defs>
+            <marker id="cdh" markerWidth="9" markerHeight="9" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" class="dg-tip" /></marker>
+            <marker id="cdhf" markerWidth="9" markerHeight="9" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="var(--ink-faint)" /></marker>
+          </defs>
+
+          <ellipse class="dg-wash blue" cx="330" cy="186" rx="98" ry="84" />
+          <ellipse class="dg-wash rose" cx="548" cy="176" rx="60" ry="58" />
+
+          <text class="dg-anno k" x="232" y="30">TRIGGERED BY A FORCING FUNCTION</text>
+          <text class="dg-anno" x="232" y="46">a handoff · a gap · a next-phase call</text>
+
+          <rect class="dg-box" x="28" y="78" width="150" height="46" rx="2.5" />
+          <text class="dg-label" x="103" y="106" text-anchor="middle">THE HUMAN</text>
+
+          <rect class="dg-box" x="28" y="153" width="150" height="46" rx="2.5" />
+          <text class="dg-label" x="103" y="181" text-anchor="middle">THE CODE</text>
+
+          <rect class="dg-box" x="28" y="228" width="150" height="46" rx="2.5" />
+          <text class="dg-label" x="103" y="256" text-anchor="middle">IN-PROCESS</text>
+
+          <text class="dg-anno" x="28" y="296">three sources, three biases</text>
+
+          <line class="dg-wire" x1="178" y1="101" x2="258" y2="158" marker-end="url(#cdh)" />
+          <line class="dg-wire" x1="178" y1="176" x2="258" y2="180" marker-end="url(#cdh)" />
+          <line class="dg-wire" x1="178" y1="251" x2="258" y2="200" marker-end="url(#cdh)" />
+
+          <rect class="dg-box" x="262" y="142" width="134" height="72" rx="2.5" />
+          <text class="dg-label" x="329" y="172" text-anchor="middle">DEBRIEF</text>
+          <text class="dg-anno" x="329" y="190" text-anchor="middle">triangulate</text>
+
+          <line class="dg-wire" x1="396" y1="178" x2="468" y2="178" marker-end="url(#cdh)" />
+
+          <rect class="dg-box" x="472" y="152" width="150" height="52" rx="2.5" />
+          <text class="dg-label" x="547" y="176" text-anchor="middle">MENTAL</text>
+          <text class="dg-label" x="547" y="194" text-anchor="middle">MODEL</text>
+          <text class="dg-anno" x="547" y="226" text-anchor="middle">rebuilt, carried forward</text>
+
+          <path class="dg-wire dash" d="M 540 206 C 470 286, 372 286, 330 216" marker-end="url(#cdhf)" />
+          <text class="dg-feedlabel" x="436" y="300" text-anchor="middle">living substrate</text>
+        </svg>
+      </div>
+    </div>
+
+    <section class="wrap">
+      <div class="proj-body-grid">
+        <aside class="proj-facts reveal">
+          <div class="pf-row"><span class="k">Type</span><span class="v">Process framework, heading toward a skill</span></div>
+          <div class="pf-row"><span class="k">Role</span><span class="v">Design &amp; research, end to end</span></div>
+          <div class="pf-row"><span class="k">Triggered by</span><span class="v">A forcing function: a handoff, a stakeholder ask, returning after a gap, a next-phase call</span></div>
+          <div class="pf-row"><span class="k">Core mechanism</span><span class="v">Triangulation across 3 to 4 knowledge sources</span></div>
+          <div class="pf-row"><span class="k">Tested on</span><span class="v mono">FOVO (~125 sessions)<br />View Anew (thin tier)</span></div>
+          <div class="pf-row"><span class="k">Status</span><span class="v">Design complete, skill codification next</span></div>
+        </aside>
+
+        <div class="proj-prose reveal">
+          <h2>The problem</h2>
+          <p>When agents build a project across many sessions, the human ends up with a gap between what was built and what they actually understand about it. In normal development that understanding accumulates on its own. You are in the code, you see the review threads, you overhear the debugging. With agent-led work you get the outcome but miss the formation. You approved the plan, you see the result, and the middle is opaque.</p>
+          <p>That gap has a cost. You cannot answer good questions about architecture, tradeoffs, or risk. You cannot make the next-phase decision well. You cannot hand the work to another person or agent. And your own contribution, the direction and the judgment calls, gets lost, because the git history just shows an agent writing code.</p>
+
+          <h2>What I built</h2>
+          <p>A framework for reconstructing that mental model, designed against real projects rather than in the abstract. A few ideas do the work:</p>
+          <ul>
+            <li><strong>Triggered by need, not by milestone.</strong> A debrief fires on a forcing function: someone asks what you built, the work changes hands, you come back after a gap, a decision is due. The trigger is what you have to do next, not the state of the project.</li>
+            <li><strong>Three sources, three biases.</strong> Knowledge in an agent-built project lives in three places, and each one lies in its own way. The human remembers the project they meant to build. The code reads as more deliberate than it was. The session and decision logs, written by agents with no memory between sessions, optimize for legibility over fidelity.</li>
+            <li><strong>Triangulation over reconciliation.</strong> The debrief reads all three against each other and treats their disagreements as the point. Where the record and the memory diverge becomes content, not something to quietly smooth over.</li>
+            <li><strong>A living substrate, not a one-off document.</strong> Each forcing function runs a reconstruction pass that updates one durable artifact. Sections carry their own history, and specific views (a stakeholder one-pager, an onboarding pack, a friction map) get exported from it on demand.</li>
+          </ul>
+
+          <h2>What it made possible</h2>
+          <p>You walk out of a debrief with a meaningfully better grip on your own system than you walked in with, and an artifact that carries it forward. You can field the architecture questions, bring in another contributor, and decide the next phase without re-reading the codebase end to end. It also gives you back the part the git log erases: the direction you set and the calls you made.</p>
+
+          <h2>Why it matters</h2>
+          <p>This is the part of agent-built work that almost nobody is designing for yet. We are getting very good at shipping software through agents and not yet good at staying in command of what we shipped. claude-debrief is a structured answer to that, built and stress-tested on a project with roughly 125 sessions behind it and a thin-tier project as the counterweight, so the framework has to hold at both ends.</p>
+        </div>
+      </div>
+
+      <nav class="proj-nav">
+        <a class="prev" href="work.html"><span class="lab">Index</span>← all work</a>
+        <a class="next" href="index.html#work"><span class="lab">Next</span>BrewProof →</a>
+      </nav>
+    </div>
+
+    <section class="contact" id="contact" style="border-top:1px solid var(--line);" data-screen-label="Contact">
+      <div class="wrap contact-inner reveal">
+        <span class="eyebrow">Want the deeper version?</span>
+        <h2>Let's make something <span class="accent">real enough to react to.</span></h2>
+        <a class="mailto" href="mailto:chrisdumler@gmail.com">chrisdumler@gmail.com <span>↗</span></a>
+        <div class="contact-links">
+          <a href="work.html">More work</a>
+          <a href="about.html">About</a>
+          <a href="https://github.com/chrisdumler" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/chrisdumler/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+      <footer class="foot">
+        <span>© <span id="year">2026</span> Chris Dumler. Built, not generated.</span>
+        <span>Question → Prototype → Artifact</span>
+      </footer>
+    </section>
+
+  </main>
+
+  <script src="assets/main.js"></script>
+</body>
+</html>
