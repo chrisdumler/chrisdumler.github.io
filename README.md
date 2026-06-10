@@ -1,21 +1,21 @@
-# Chris Dumler - AI Interaction Designer
+# Chris Dumler
 
-Human-AI collaboration specialist focused on systematic interaction frameworks, evaluation systems, and trustworthy AI conversations.
+**Experimental AI systems for creative work.** Synthetic audio research, AI characters, creative interfaces, prompt systems, and working prototypes. I am a Human-AI Interaction designer who turns live questions into something concrete: a prototype, a system, a character, a tool, an artifact.
 
-🌐 **Portfolio:** [chrisdumler.github.io](https://chrisdumler.github.io)
+🌐 **Live site:** [chrisdumler.github.io](https://chrisdumler.github.io)
 
-## Selected Work
+## Selected work
 
-- **[Multi-Agent Research Tool](https://github.com/chrisdumler/food-truck-research-agents)** - Sketch image concept, managed, coded in 2.5 hours using AI PM methodology
-- **[Micro-Evaluations Framework](https://github.com/chrisdumler/APL-ContextAwares)** - Trust & instruction-following evaluation system
-- **[Context Engineering Case Study](assets/case-studies/hackaprompt-context-engineering-case-study.md)** - HackAPrompt analysis and methodology
+- **[Amara](https://chrisdumler.github.io/project-amara.html)** · a persistent AI collaborator with a real point of view, made durable by a memory architecture that outlives any single model.
+- **[IVEP](https://chrisdumler.github.io/project-ivep.html)** · an interactive experience where a concept becomes fluid, ink-like motion instead of words.
+- **[claude-debrief](https://chrisdumler.github.io/project-claude-debrief.html)** · a structured process for rebuilding your mental model of software built largely through AI-agent sessions.
 
-## Background
+See all projects at [chrisdumler.github.io/work.html](https://chrisdumler.github.io/work.html), and more about me at [chrisdumler.github.io/about.html](https://chrisdumler.github.io/about.html).
 
-Former Tinder data scientist with experience scaling user interactions to 50M+ users. Now focused on building systematic human-AI collaboration frameworks that maintain quality under pressure.
+## Contact
 
-📧 **Contact:** <chrisdumler@gmail.com>  
-🔗 **LinkedIn:** [linkedin.com/in/chrisdumler](https://linkedin.com/in/chrisdumler)
+📧 <chrisdumler@gmail.com>  
+🔗 [linkedin.com/in/chrisdumler](https://linkedin.com/in/chrisdumler)
 
 ---
-*This portfolio demonstrates human-AI collaboration in practice - designed and built using Claude.*
+*Question → Prototype → Artifact. Built, not generated.*
