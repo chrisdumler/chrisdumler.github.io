@@ -560,6 +560,17 @@ strong { font-weight: 600; }
 /* category tags read muted, not blue (keeps blue for interaction) */
 .proj-main .tag { color: var(--ink-soft); }
 
+/* inline prose link */
+.text-link {
+  color: var(--accent-ink);
+  border-bottom: 1px solid var(--line);
+  transition: color .2s, border-color .2s;
+}
+.text-link:hover { color: var(--accent); border-color: var(--accent); }
+/* default accents are too dim against the dark surface */
+:root[data-surface="dark"] .text-link { color: #7FA8CC; }
+:root[data-surface="dark"] .text-link:hover { color: #9CC2E0; border-color: #7FA8CC; }
+
 /* ---------- nav: theme toggle ---------- */
 .topnav { align-items: center; }
 .theme-toggle {
